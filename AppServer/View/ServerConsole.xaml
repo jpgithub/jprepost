@@ -1,0 +1,73 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="AppServer.View.ServerConsole"
+        Title="Virtualize Hardware" SizeToContent="WidthAndHeight" >
+    <Grid Height="390">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="28" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="275" />
+            <ColumnDefinition Width="275" />
+        </Grid.ColumnDefinitions>
+        <Menu IsMainMenu="True" Grid.ColumnSpan="2">
+            <MenuItem Header="File">
+                <MenuItem Header="Open File" Command="{Binding OpenFileCmd}"/>
+            </MenuItem>
+        </Menu>
+        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="32" Content="Virtualize Hardware" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Height="55" FontFamily="Magneto"/>
+        <!--<Label Grid.Row="1" Grid.Column="0" FontSize="48" Content="Callback Console" HorizontalAlignment="Center" Margin="0,0,0,85" VerticalAlignment="Center" Height="55" FontFamily="Magneto"/>-->
+        <WrapPanel Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Button Content="Start" Command="{Binding StartCmd}" IsEnabled="True" Margin="0,0,10,0"/>
+            <Label Content="Port #:" FontFamily="Segoe UI Semibold" />
+            <TextBox Height="22" TextWrapping="Wrap" Text="{Binding PortModel.PortNumber}" Width="50" Margin="0,0,10,0" IsEnabled="{Binding PortModel.IsEditable}" PreviewTextInput="NumberValidationTextBox" />
+            <Button Content="Stop" Command="{Binding StopCmd}" IsEnabled="True" Margin="0,0,10,0"/>
+            <Label Content="Debug Console:" FontFamily="Segoe UI Semibold" />
+            <Label Content="Connection Console:" FontFamily="Segoe UI Semibold" />
+        </WrapPanel>
+        <ScrollViewer Grid.Row="3" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10" Grid.RowSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border x:Name="ConsoleBorder" Grid.Column="1" Margin="5"/>
+                <TextBlock Width="{Binding ActualWidth, ElementName=ConsoleBorder}"
+                     MinWidth="200"
+                     Grid.Column="1"
+                     Margin="5"
+                     VerticalAlignment="Center"
+                     TextWrapping="Wrap"
+                     Text="{Binding LogStreamOutput.DebugLog}" Height="Auto"/>
+            </Grid>
+        </ScrollViewer>
+        <ScrollViewer Grid.Row="3" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10" Grid.RowSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border x:Name="Console2Border" Grid.Column="1" Margin="5"/>
+                <TextBlock Width="{Binding ActualWidth, ElementName=Console2Border}"
+                     MinWidth="200"
+                     Grid.Column="1"
+                     Margin="5"
+                     VerticalAlignment="Center"
+                     TextWrapping="Wrap"
+                     Text="{Binding LogStreamOutput.ConnectionLog}" Height="Auto"/>
+            </Grid>
+        </ScrollViewer>
+
+    </Grid>
+</Window>
