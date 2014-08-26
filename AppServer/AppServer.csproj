@@ -57,6 +57,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Backend\StateObject.cs" />
     <Compile Include="Misc\MessageEventArgs.cs" />
     <Compile Include="Backend\FileStreamReader.cs" />
     <Compile Include="Backend\INetworkStatus.cs" />

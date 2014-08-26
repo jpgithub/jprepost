@@ -148,7 +148,7 @@ namespace AppServer.ViewModel
                 FileStreamReader myreader = new FileStreamReader(filename);
                 logStreamOutput.DebugLog += "Port Number is " + portModel.PortNumber;
                 portModel.IsEditable = false;
-                appserver = new NetworkAccess(myreader.Stream,portModel.PortNumber);
+                appserver = new NetworkAccess(portModel.PortNumber);
                 appserver.NetworkStatus += listenNetworkStatus;
                 appserver.ServerStatus += listenServerStatus;
                 Thread spawn = new Thread(new ThreadStart(appserver.StartServer));
