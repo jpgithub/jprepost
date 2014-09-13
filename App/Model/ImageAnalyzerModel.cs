@@ -14,8 +14,28 @@ namespace WpfApplication2.Model
         private string mouselocation;
         //private Stream imgStream;
         private BitmapImage netImage;
-        private byte[] byteStream;
+        
+		public ImageAnalyzerModel()
+        {
+		
+            #region ColorBarBrush
+            lgcolorBar = new LinearGradientBrush();
+			
+            try
+            {
+                lgcolorBar = Application.Current.FindResource("GreyBlackHotBrush") as LinearGradientBrush;
+                // Color gsc = brush.GradientStops[0].Color;
+            }
+            catch (ResourceReferenceKeyNotFoundException e)
+            {
+                Console.Out.WriteLineAsync("Resource Exception: " + e.Message);
+            }
 
+            #endregion
+        
+		}
+
+		
         public string ImageFileName
         {
             get
@@ -55,21 +75,6 @@ namespace WpfApplication2.Model
                 OnPropertyChanged("NetImage");
             }
         }
-/*
-        public Stream ImageStream
-        {
-            get
-            {
-                return imgStream; 
-            }
-            set
-            {
-                this.imgStream = value;
-                OnPropertyChanged("ImageStream");
-            }
-
-        }
-*/
         
 
     }
