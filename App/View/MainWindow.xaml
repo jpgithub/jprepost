@@ -2,17 +2,17 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:WpfApplication2.ViewModel"
-        Title="MainWindow" SizeToContent="Height" Width="500">
-    <StackPanel>
+        Title="MainWindow" SizeToContent="WidthAndHeight">
+    <StackPanel Width="600">
         <Button Content="QueryImage" Command="{Binding QueryImageCmd}"/>
         <Button Content="StopQuery" Command="{Binding StopQueryCmd}"/>
-
-
         <Image Height="500" Source="{Binding ImageAnalyzerModel.NetImage}" MouseMove="Image_MouseMove"/>
-        <TextBox x:Name="MousePos" Height="23" TextWrapping="Wrap" Text="{Binding ImageAnalyzerModel.ImageFileName}"/>
+        <TextBox x:Name="ImageTime" Height="23" TextWrapping="Wrap" />
         <TextBox x:Name="MouseLoc" Height="23" TextWrapping="Wrap" Text="{Binding ImageAnalyzerModel.MouseLocation}"/>
         <Button Content="DialogBox" Click="formatMarginsMenuItem_Click"/>
+        <Rectangle Height="20" Fill="{Binding ImageAnalyzerModel.ColorBar}" />  
+        <Button Content="General Purpose Button" Command="{Binding GPIO}"/>
+        <ProgressBar Height="15" Value="{Binding ImageAnalyzerModel.ProgressValue}" />
         
-
     </StackPanel>
 </Window>
