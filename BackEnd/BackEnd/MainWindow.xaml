@@ -17,10 +17,11 @@
             <Label Name="FrameTime" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <Label Name="FrameSet" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="2">
+        <StackPanel Orientation="Vertical" Grid.Row="2">
             <Button Name="rewindBtn" Content="Rewind" Width="75" Click="rewindBtn_Click"/>
             <Button Name="playBtn" Content="Play" Width="75" Click="playBtn_Click"/>
             <Button Name="forwardBtn" Content="Forward" Width="75" Click="forwardBtn_Click"/>
+            <Button Name="pauseBtn" Content="Pause" Width="75" Click="pauseBtn_Click" />
         </StackPanel>
     </Grid>
 </Window>
