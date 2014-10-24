@@ -22,6 +22,8 @@
             <Button Name="playBtn" Content="Play" Width="75" Click="playBtn_Click"/>
             <Button Name="forwardBtn" Content="Forward" Width="75" Click="forwardBtn_Click"/>
             <Button Name="pauseBtn" Content="Pause" Width="75" Click="pauseBtn_Click" />
+            <Button Name="stopBtn" Content="Stop" Width="75" Click="stopBtn_Click" />
+            <CheckBox Content="Single Step" Margin="86,0,77,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
         </StackPanel>
     </Grid>
 </Window>
