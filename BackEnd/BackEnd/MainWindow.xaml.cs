@@ -75,6 +75,7 @@ namespace BackEnd
             if (!isSingleStep)
             {
                 isReserve = true;
+                frameInterval = 32;
                 StartDispatcher();
             }
 
