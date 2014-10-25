@@ -1,5 +1,6 @@
 ﻿using BackEnd.Backend;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,11 +28,12 @@ namespace BackEnd
         private double frameInterval = 32;
         private DispatcherTimer timer;
         private List<FrameObject> Frames = new List<FrameObject>();
-        private bool isReserve;
+        private bool isReverse;
         private bool isSingleStep;
         private bool isPause;
         public delegate void QueryTime();
-    
+        
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -50,19 +52,36 @@ namespace BackEnd
             //new TctFileReader(string.Empty);
             //Frames.Add(test);
 
+            count = 0;
+            this.InitializeFrames();
+            count = (int)(uint.MinValue);
+            
+            
         }
 
         private void frame_Tick(object sender, EventArgs e)
         {
-            FrameTime.Content = "Frame " + count.ToString();
-            
-            if (isReserve)
+            if (isReverse)
+            {
                 count--; // if Frame.First() == begin call stop
+            }
             else
+            {
                 count++;
-            
-            if ((count > 25) || (count < -25))
-                count = 0;
+            }
+
+            GetAFrame();
+        }
+
+        private void GetAFrame()
+        {
+            if ((count < uint.MinValue) || (count >= Frames.Count))
+            {
+                count = (int)uint.MinValue;
+                frametimer.Stop();
+            }
+
+            FrameTime.Content = "Frame " + Frames[count].FieldOne.ToString();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -74,7 +93,7 @@ namespace BackEnd
         {
             if (!isSingleStep)
             {
-                isReserve = true;
+                isReverse = true;
                 frameInterval = 32;
                 StartDispatcher();
             }
@@ -82,14 +101,14 @@ namespace BackEnd
             if (isSingleStep)
             {
                 count--;
-                FrameTime.Content = "Frame " + count.ToString();
+                GetAFrame();
             }
         }
         
         private void playBtn_Click(object sender, RoutedEventArgs e)
         {
             frameInterval = 32;
-            isReserve = false;
+            isReverse = false;
             StartDispatcher();  
         }
 
@@ -114,7 +133,7 @@ namespace BackEnd
         {
             if (!isSingleStep)
             {
-                isReserve = false;
+                isReverse = false;
                 frameInterval /= 2;
                 StartDispatcher();
             }
@@ -122,7 +141,7 @@ namespace BackEnd
             if (isSingleStep)
             {
                 count++;
-                FrameTime.Content = "Frame " + count.ToString();
+                GetAFrame();
             }
         }
 
@@ -143,9 +162,11 @@ namespace BackEnd
         private void stopBtn_Click(object sender, RoutedEventArgs e)
         {
             frametimer.Stop();
-            isReserve = false;
+            isReverse = false;
             //DisplayOutput(Frame.First()); 
-            count = 0;
+           
+            FrameObject  begin = Frames.First();
+            count = begin.FieldOne;
             FrameTime.Content = "Frame " + count.ToString();
         }
 
@@ -164,5 +185,18 @@ namespace BackEnd
             stopBtn.IsEnabled = true;
             pauseBtn.IsEnabled = true;
         }
+
+        private void InitializeFrames()
+        {
+            while (count <= 200)
+            {
+                FrameObject frame = new FrameObject();
+                frame.FieldOne = count;
+                Frames.Add(frame);
+                count++;
+            }
+        }
+
+        
     }
 }
