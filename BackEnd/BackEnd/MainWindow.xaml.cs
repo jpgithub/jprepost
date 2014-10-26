@@ -166,7 +166,7 @@ namespace BackEnd
             //DisplayOutput(Frame.First()); 
            
             FrameObject  begin = Frames.First();
-            count = begin.FieldOne;
+            count = (int)begin.FieldOne;
             FrameTime.Content = "Frame " + count.ToString();
         }
 
@@ -191,7 +191,7 @@ namespace BackEnd
             while (count <= 200)
             {
                 FrameObject frame = new FrameObject();
-                frame.FieldOne = count;
+                frame.FieldOne = (uint)count;
                 Frames.Add(frame);
                 count++;
             }
