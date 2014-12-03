@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -197,6 +198,40 @@ namespace BackEnd
             }
         }
 
-        
+
+        private void TestBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Button theButton = sender as Button;
+
+            if (theButton != null)
+            {
+                // Checking if this thread has access to the object. 
+                if (theButton.Dispatcher.CheckAccess())
+                {
+                    // This thread has access so it can update the UI thread.
+                    UpdateButtonUI(theButton);
+                }
+                else
+                {
+                    // This thread does not have access to the UI thread. 
+                    // Place the update method on the Dispatcher of the UI thread.
+                    theButton.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                        new UpdateUIDelegate(UpdateButtonUI), theButton);
+                }
+            }
+        }
+
+        private void UpdateButtonUI(Button theButton)
+        {
+            theButton.Content = "CalledBtn";
+        }
+
+        private delegate void UpdateUIDelegate(Button theButton);
+
+
+        private void ThreadBtn_Click(object sender, RoutedEventArgs e)
+        {
+            new Thread(() => { this.TestBtn_Click(sender, e); }).Start();
+        }
     }
 }

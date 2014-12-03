@@ -24,6 +24,8 @@
             <Button Name="pauseBtn" Content="Pause" Width="75" Click="pauseBtn_Click" />
             <Button Name="stopBtn" Content="Stop" Width="75" Click="stopBtn_Click" />
             <CheckBox Content="Single Step" Margin="86,0,77,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+            <Button Name="TestBtn" Content="TestBtn" Width="75" Click="TestBtn_Click" />
+            <Button Name="TestBtn2" Content="ThreadBtn" Width="75" Click="ThreadBtn_Click" />
         </StackPanel>
     </Grid>
 </Window>
