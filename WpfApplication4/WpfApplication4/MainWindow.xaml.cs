@@ -39,6 +39,14 @@ namespace WpfApplication4
         private void Filter_Click(object sender, RoutedEventArgs e)
         {
             _workingdir = @"" + DirPath.Text;
+			// Simple rename test snippet for code , please set break point
+            if(_workingdir.Contains(".RAW"))
+            {
+                var newpath = _workingdir.Substring(0,_workingdir.Length - System.IO.Path.GetExtension(_workingdir).Length);
+                var newPath = newpath + ".tel";
+                File.Move(_workingdir, newPath);
+            }
+            //end
             try
             {
                 if (Directory.Exists(_workingdir))
