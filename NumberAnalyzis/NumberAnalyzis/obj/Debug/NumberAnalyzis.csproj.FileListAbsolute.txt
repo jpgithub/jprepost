@@ -1,0 +1,6 @@
+c:\users\jp\documents\visual studio 2012\Projects\NumberAnalyzis\NumberAnalyzis\bin\Debug\NumberAnalyzis.exe.config
+C:\Users\JP\documents\visual studio 2012\Projects\NumberAnalyzis\NumberAnalyzis\obj\Debug\NumberAnalyzis.csprojResolveAssemblyReference.cache
+C:\Users\JP\documents\visual studio 2012\Projects\NumberAnalyzis\NumberAnalyzis\bin\Debug\NumberAnalyzis.exe
+C:\Users\JP\documents\visual studio 2012\Projects\NumberAnalyzis\NumberAnalyzis\bin\Debug\NumberAnalyzis.pdb
+C:\Users\JP\documents\visual studio 2012\Projects\NumberAnalyzis\NumberAnalyzis\obj\Debug\NumberAnalyzis.exe
+C:\Users\JP\documents\visual studio 2012\Projects\NumberAnalyzis\NumberAnalyzis\obj\Debug\NumberAnalyzis.pdb
