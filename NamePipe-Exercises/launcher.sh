@@ -46,6 +46,7 @@ echo $index
 #done
 #echo $index
 
+#http://redhawk.ccur.com/docs/root/1Linux/1RedHawk/6.3/0898004-680.pdf - pdfpage 45
 # shield all CPUs in CPULIST
 # shield -a CPULIST
 #This shield cpu 0 from irq and local timer and proccess
