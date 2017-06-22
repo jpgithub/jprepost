@@ -23,8 +23,10 @@ Server::Server(int portnumber) {
 }
 
 Server::~Server() {
+	if(threadobj.joinable())
+		threadobj.join();
 	// Close all client connections
-	for (vector<sockfd>::iterator it = connected.begin(); it != connected.end(); ++it)
+	for (std::vector<sockfd>::iterator it = connected.begin(); it != connected.end(); ++it)
 	{
 		close(*it);
 	}
@@ -35,10 +37,26 @@ Server::~Server() {
 void Server::AddClient(sockfd client){
 	// Update client connection list
 	connected.push_back(client);
-	//Spawn Client Worker Thread
-	//cout << "Server ID: "<< _fd <<" Added New Client ID: "<< client <<endl;
+
 }
 
-void Server::AddTask(ITask task){
+void Server::Task(){
+	int client = connected.front();
+	// Receive with timeout
+	struct timeval tv;
+	tv.tv_sec = 30; //Timeout 1 min
+	tv.tv_usec = 0;
+	setsockopt(client, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv,sizeof(struct timeval));
+
+	//Spawn Client Worker Thread
+	std::cout << "Server ID: "<< _fd <<" Added New Client ID: "<< client << std::endl;
+	char buffer[256];
+	size_t len = sizeof(buffer)/sizeof(char);
+	read(client,buffer,len);
+	std::cout << "TimeOut" << std::endl;
+
+}
+void Server::Run(){
+	threadobj = std::thread (&Server::Task,this);
 }
 

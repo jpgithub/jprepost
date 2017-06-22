@@ -14,7 +14,7 @@
 //=================================
 // included dependencies
 #include <vector>
-
+#include <thread>
 // Linux System API
 #include <unistd.h>
 
@@ -32,6 +32,9 @@ class Server {
 	struct sockaddr_in _addr;
 	sockfd _fd;
 	std::vector<sockfd> connected;
+	// Task for server to perform
+	void Task();
+	std::thread threadobj;
 public:
 	Server(int portnumber);
 	virtual ~Server();
@@ -42,7 +45,7 @@ public:
 	// Add new client connection
 	void AddClient(sockfd client);
 	// Task for server to perform
-	void AddTask(ITask task);
+	void Run();
 };
 
 #endif /* SERVER_H_ */
