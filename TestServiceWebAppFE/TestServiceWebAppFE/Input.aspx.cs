@@ -41,6 +41,7 @@ namespace TestServiceWebAppFE
             TextBox10.Text = tb2.Length.ToString();
             TextBox11.Text = tb2.Unit;
 
+            
         }
     }
 }

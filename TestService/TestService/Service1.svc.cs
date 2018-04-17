@@ -70,7 +70,19 @@ namespace TestService
 
             dbconnection.Close();
 
+            //this.EventCallback(dbconnection.WorkstationId);
+
             return tb1; 
         }
+
+        //public void EventCallback(string message)
+        //{
+        //    //Notify Event Changes using call back
+        //    IServiceEventCallBacks handler = OperationContext.Current.GetCallbackChannel<IServiceEventCallBacks>();
+        //    if (handler != null)
+        //    {
+        //        handler.EventCallback(message);
+        //    }
+        //}
     }
 }

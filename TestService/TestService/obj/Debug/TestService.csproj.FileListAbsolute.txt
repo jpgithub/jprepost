@@ -1,0 +1,4 @@
+c:\users\jp\documents\visual studio 2012\Projects\TestService\TestService\bin\TestService.dll
+c:\users\jp\documents\visual studio 2012\Projects\TestService\TestService\bin\TestService.pdb
+c:\users\jp\documents\visual studio 2012\Projects\TestService\TestService\obj\Debug\TestService.dll
+c:\users\jp\documents\visual studio 2012\Projects\TestService\TestService\obj\Debug\TestService.pdb
