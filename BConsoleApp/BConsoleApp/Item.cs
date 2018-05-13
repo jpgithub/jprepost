@@ -10,5 +10,8 @@ namespace BConsoleApp
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public byte[] PayLoad { get; set; }
+        public byte[] PayLoad2 { get; set; }
+        public byte[] PayLoad3 { get; set; }
     }
 }

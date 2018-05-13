@@ -42,13 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsynchronousBufferItem.cs" />
+    <Compile Include="Consumer.cs" />
+    <Compile Include="DataSubFrame.cs" />
+    <Compile Include="IScanner.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="ItemConsumer.cs" />
+    <Compile Include="DataFrame.cs" />
+    <Compile Include="Scanner.cs" />
     <Compile Include="Warehouse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="output11.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

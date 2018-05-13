@@ -13,23 +13,47 @@ namespace BConsoleApp
         private static CancellationTokenSource flag = new CancellationTokenSource();
         static void Main(string[] args)
         {
-            Task loader = Program.LoadWareHouseTask();
+            // Create a generic scanner
+            IScanner reader = Scanner.Create(args[0]);
+            //var ienumreader = reader.ReadItems();
 
-            Task unloader = Task.Factory.StartNew(() =>
+            // Create ItemConsumer
+            ItemConsumer consumer = new ItemConsumer();
+            var task = consumer.ProcessAsync();
+
+            int counter = 0;
+            foreach (var item in reader.ReadItems())
             {
-                bool status = true;
-                while (status)
-                {
-                    Item item = warehouse.TakeItemFromInventory(out status, 500);
-                    Program.StateMachine(item);
-                    if (warehouse.EndProcessing)
-                        break;
-                }
-            });
+                var df = new DataFrame(item.PayLoad);
+                consumer.Buffer.Add(new AsynchronousBufferItem() {
+                    ID = string.Format("subframe_{0}",counter),
+                    Words = df.Words
+                });                
+            }
+            consumer.EndProcessing();
+
+            task.Wait();
+
+            Console.Out.WriteLine(string.Format("Consumer outputted subframe count of {0}", consumer.Elements.Count.ToString()));
+
+
+            //Task loader = Program.LoadWareHouseTask();
+
+            //Task unloader = Task.Factory.StartNew(() =>
+            //{
+            //    bool status = true;
+            //    while (status)
+            //    {
+            //        Item item = warehouse.TakeItemFromInventory(out status, 500);
+            //        Program.StateMachine(item);
+            //        if (warehouse.EndProcessing)
+            //            break;
+            //    }
+            //});
 
             Console.ReadKey();
-            Program.Done();
-            Task.WaitAll(loader, unloader);
+            //Program.Done();
+            //Task.WaitAll(loader, unloader);
             
         }
 
