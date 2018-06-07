@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubsequenceWeighting", "SubsequenceWeighting\SubsequenceWeighting.csproj", "{EA7A641B-0E15-49D7-A8F9-633378A8B90E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSequenceWeightUnitTest", "SubSequenceWeightUnitTest\SubSequenceWeightUnitTest.csproj", "{76FCCD8C-9750-4A89-910E-E17C0910399C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA7A641B-0E15-49D7-A8F9-633378A8B90E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA7A641B-0E15-49D7-A8F9-633378A8B90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA7A641B-0E15-49D7-A8F9-633378A8B90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA7A641B-0E15-49D7-A8F9-633378A8B90E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76FCCD8C-9750-4A89-910E-E17C0910399C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76FCCD8C-9750-4A89-910E-E17C0910399C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76FCCD8C-9750-4A89-910E-E17C0910399C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76FCCD8C-9750-4A89-910E-E17C0910399C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
