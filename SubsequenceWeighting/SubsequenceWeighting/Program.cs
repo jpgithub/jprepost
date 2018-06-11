@@ -51,607 +51,106 @@ namespace SubsequenceWeighting
             //}
         }
 
-        private static void Solution1(string[] Ai, string[] Wi)
+        
+        public static List<int> CalculateSubsequenceWithRemainder(int[] Ai, int pivot, int pivotIndex, out IList<int> remainder)
         {
-            long maxweight = 0;
-
-            List<int> Bi;
-            int startingIndex = 0;
-
-            while (startingIndex < Ai.Count() && startingIndex >= 0)
-            {
-                long weight = 0;
-
-                int nextIndex = CalculatedSubSeqWeight(startingIndex, Array.ConvertAll(Ai, Int32.Parse), Array.ConvertAll(Wi, Int32.Parse), out Bi);
-
-                foreach (var key in Bi)
-                {
-                    weight += int.Parse(Wi[key]);
-                }
-
-                if (maxweight < weight)
-                {
-                    maxweight = weight;
-                }
-
-                startingIndex = nextIndex;
-            }
-
-            Console.Out.WriteLineAsync(maxweight.ToString());
-        }
-
-
-
-        public static Dictionary<int, List<int>> GenerateWeightTableUnsorted(int[] Ai, int[] Wi)
-        {
-            Dictionary<int, List<int>> weightTable = new Dictionary<int, List<int>>();
-
-            // make i (1 <= i < M), bi < bi + 1
-            for (int i = 0; i < Ai.Length && i < Wi.Length; i++)
-            {
-                if (!weightTable.ContainsKey(Ai[i]))
-                {
-                    weightTable.Add(Ai[i], new List<int>() { i });
-                }
-                else
-                {
-                    weightTable[Ai[i]].Add(i);
-                }
-            }
-            return weightTable;
-        }
-
-
-        public static SortedDictionary<int, List<int>> GenerateWeightTableOptimize(int[] Ai, int[] Wi)
-        {
-            SortedDictionary<int, List<int>> weightTable = new SortedDictionary<int, List<int>>();
-  
-            // make i (1 <= i < M), bi < bi + 1
-            for (int i = 0; i < Ai.Length && i < Wi.Length; i++)
-            {
-                if (!weightTable.ContainsKey(Ai[i]))
-                {
-                    weightTable.Add(Ai[i], new List<int>() { i });
-                }
-                else
-                {
-                    weightTable[Ai[i]].Add(i);
-                }
-            }
-            return weightTable;
-        }
-
-
-        public static Dictionary<int, int[]> GenerateWeightTable(int[] Ai, int[] Wi)
-        {
-            List<int> Bi;
-            Dictionary<int, int[]> weightTable = new Dictionary<int, int[]>();
-            int startingIndex = 0;
-            int nextIndex = 0;
-            while (startingIndex < Ai.Length && startingIndex >= 0)
-            {
-                if (!weightTable.ContainsKey(Ai[startingIndex]))
-                {
-                    nextIndex = Program.FindAllMatchingPairs(startingIndex, Ai, Wi, out Bi);
-                    weightTable.Add(Ai[startingIndex], Bi.ToArray());
-                }
-                else
-                {
-                    nextIndex++;
-                }
-                startingIndex = nextIndex;
-            }
-            return weightTable;
-        }
-
-        /// <summary>
-        /// Return the subsequence (b,w) given a start index 
-        /// </summary>
-        /// <param name="startIndex"></param>
-        /// <param name="Ai"></param>
-        /// <param name="Wi"></param>
-        /// <param name="bi"></param>
-        /// <returns></returns>
-        public static int FindAllMatchingPairs(int startIndex, int[] Ai, int[] Wi, out List<int> bu)
-        {
+            List<int> sequence = new List<int>();
+            remainder = new List<int>();
+            List<int> input_seq = new List<int>(Ai);
             
-            bu = new List<int>();
-            //start at index 0
-            bu.Add(startIndex);
-            int nextIndex = -1;
-           
-            // make i (1 <= i < M), bi < bi + 1
-            for (int i = startIndex + 1; i < Ai.Length && i < Wi.Length; i++)
+            sequence.Add(pivot);
+            int currentIndex = 0;
+
+            foreach (var A in input_seq)
             {
-                // Find all pair with the same A[i]
-                if (Ai[startIndex] == Ai[i])
+                if (A > sequence.Last() && input_seq.IndexOf(A, currentIndex) > pivotIndex)
                 {
-                    bu.Add(i);
+                    sequence.Add(A);
                 }
                 else
                 {
-                    if (nextIndex == -1)
+                    if (input_seq.IndexOf(A, currentIndex) < pivotIndex && A < pivot)
                     {
-                        nextIndex = i;
-                    }
-                }
-            }
-
-            return nextIndex;
-        }
-
-        /// <summary>
-        /// Return the subsequence (b,w) given a start index 
-        /// </summary>
-        /// <param name="startIndex"></param>
-        /// <param name="Ai"></param>
-        /// <param name="Wi"></param>
-        /// <param name="bi"></param>
-        /// <returns></returns>
-        public static int CalculatedSubSeqWeight(int startIndex, int[] Ai, int[] Wi, out List<int> bi)
-        {
-            bi = new List<int>();
-            //start at index 0
-            bi.Add(startIndex);
-            int nextIndex = -1;
-            // make i (1 <= i < M), bi < bi + 1
-            for (int i = startIndex + 1; i < Ai.Length && i < Wi.Length; i++)
-            {
-                // check the first item on the pair
-                int last = bi.Last();
-                if (Ai[last] < Ai[i])
-                {
-                    bi.Add(i);
-                }
-                else if (Ai[last] == Ai[i])
-                {
-                    // opportunity to swap for a higher weight with the same "a"
-                    // check the second item on the pair
-                    if (Wi[last] < Wi[i])
-                    {
-                        bi[bi.Count-1] = i;
-                    }
-                }
-                else
-                {
-                    if (nextIndex < 0)
-                    {
-                        // revisit this for the next subsequence
-                        nextIndex = i;
-                    }
-
-                }
-            }
-            return nextIndex;
-        }
-
-
-        /// <summary>
-        /// Return the subsequence (b,w) given a start index 
-        /// </summary>
-        /// <param name="startIndex"></param>
-        /// <param name="Ai"></param>
-        /// <param name="Wi"></param>
-        /// <param name="bi"></param>
-        /// <returns></returns>
-        public static long CalculateSubSeqweight(List<int> subsequence, int[] Ai, int[] Wi,out List<int> wu)
-        {
-            long weight = 0;
-            wu = new List<int>();
-            for (int i = 0, j = 0; i < Ai.Length && i < Wi.Length; i++)
-            {
-                if (subsequence[j] == Ai[i])
-                {
-                    weight += Wi[i];
-                    wu.Add(Wi[i]);
-                    j++;
-                }
-            }
-            return weight;
-        }
-
-        public static IEnumerable<int> GetNode(List<int> nodelist)
-        {
-            for (int i = 0; i < nodelist.Count; i++)
-            {
-                yield return nodelist[i];
-            }
-        }
-
-        public static int[] TraverseNodes(IDictionary<int, List<int>> rows, IList<int> visitedNodes)
-        {
-            int levelElementIndexer = 0;
-            IList<int> subsequence = new List<int>();
-            var nodes = rows.Keys.GetEnumerator();
-            
-            while (nodes.MoveNext())
-            {
-                var level = rows[nodes.Current];
-
-                if(visitedNodes.Contains(level[levelElementIndexer]))
-                {
-                    levelElementIndexer++;
-                }
-
-                // for each level count the number of element for this level
-                while (level.Count > 0)
-                {    
-                    if (subsequence.Count == 0 || subsequence.Last() < level[levelElementIndexer])
-                    {
-                        subsequence.Add(level[levelElementIndexer]);
-                        levelElementIndexer = 0;
-                        break;
-                    }
-                    else
-                    {
-                        levelElementIndexer++;
-                    }
-                }
-            }
-            return subsequence.ToArray();
-        }
-
-
-        public static long TraverseMaxNodes(IDictionary<int, List<int>> weightTable, int[] Wi, int rootnodeoffset = 0)
-        {
-            long maxWeight = 0;
-            int indexMaxWeight = 0;
-            int levelElementIndexer = 0;
-            List<int> subsequence = new List<int>();
-
-            var nodes = weightTable.Keys.GetEnumerator();
-            nodes.MoveNext();
-            subsequence.Add(weightTable[nodes.Current].ElementAt(rootnodeoffset));
-            maxWeight += Wi[subsequence.Last()];
-
-            while (nodes.MoveNext())
-            {
-                int localmax = 0;
-                var level = weightTable[nodes.Current];
-                
-                // for each level count the number of element for this level
-                while (level.Count > 0 && levelElementIndexer < level.Count)
-                {
-                    //Find the maximum
-                    if (Wi[level[levelElementIndexer]] > localmax)
-                    {
-                        localmax = Wi[level[levelElementIndexer]];
-                        indexMaxWeight = levelElementIndexer;
-                    }
-                    else if ((indexMaxWeight < levelElementIndexer) && (subsequence.Count != 0))
-                    {
-                        // choice the index greater
-                        // the index of the max weight is smaller than the last element of subsequence of index
-                        if (subsequence[subsequence.Count - 1] < level[levelElementIndexer]
-                            && subsequence[subsequence.Count - 1] > level[indexMaxWeight] )
+                        if (A < sequence.First())
                         {
-                            indexMaxWeight = levelElementIndexer;
+                            if (input_seq.IndexOf(A, currentIndex) < input_seq.IndexOf(sequence.First(), currentIndex))
+                            {
+                                sequence.Insert(0, A);
+                            }
+                        }
+                        else if (sequence.First() < A && A < pivot)
+                        {
+                            //Has a bug need to priortize index  of element
+                            SpecialInsert(sequence, A, sequence.IndexOf(pivot));
                         }
                     }
-                    levelElementIndexer++;
-                }
-
-                if (subsequence.Count == 0 || subsequence[subsequence.Count - 1] < level[indexMaxWeight])
-                {
-                    // add to the list of subsequence of index
-                    subsequence.Add(level[indexMaxWeight]);
-                    maxWeight += Wi[level[indexMaxWeight]];
-                    levelElementIndexer = 0;
-                    indexMaxWeight = 0;
-                    localmax = 0;
-                }
-            }
-
-            var ans = subsequence.ToArray();
-
-            return maxWeight;
-        }
-
-        public static List<int> GetLongestSubSequence(int[] Ai)
-        {
-            List<List<int>> seqLists = new List<List<int>>();
-
-            for (int i = 0; i < Ai.Length; i++)
-            {
-                List<int> seq = Program.CalculateSubsequence(Ai, i);
-                seqLists.Add(seq);
-                i = seq[seq.Count - 1];
-            }
-
-            int seqlength = 0;
-            int seqlindex = 0;
-            // Look for the largest sequence length
-            for (int i = 0; i < seqLists.Count; i++)
-            {
-                if (seqLists[i].Count > seqlength)
-                {
-                    seqlength = seqLists[i].Count;
-                    seqlindex = i;
-                }
-            }
-
-
-            int dropped = 0;
-
-
-            var seqListsCopy = seqLists.ToList();
-
-            var longSeq = seqLists[seqlindex].ToList();
-
-            var firstseq = longSeq.ToList();
-
-
-
-            while (dropped < longSeq.Count)
-            {
-                for (int i = 1; i < seqListsCopy.Count; i++)
-                {
-                    if (Ai[firstseq.Last()] > Ai[seqListsCopy[i].First()])
+                    else if (input_seq.IndexOf(A, currentIndex) == pivotIndex)
                     {
                         continue;
                     }
                     else
                     {
-                        if (dropped < firstseq.Count)
-                        {
-                            longSeq = firstseq.ToList();
-                            longSeq.AddRange(seqListsCopy[i]);
-                            firstseq = longSeq.ToList();
-                        }
-
-                        seqListsCopy.RemoveAt(i);
-                        dropped = 0;
-                        // extend the "first seq"
-                        break;
-                    }
-
-                }
-
-
-
-                firstseq.RemoveAt(firstseq.Count - 1);
-                dropped++;
-            }
-
-
-            //for ( int i = 1; i < seqLists.Count ; i++)
-            //{
-            //    var firstseq = longSeq.ToList();
-            //    while (dropped < seqLists[i].Count)
-            //    {
-            //        // 
-            //        if (Ai[firstseq.Last()] > Ai[seqLists[i].First()])
-            //        {
-            //            dropped++;
-            //            firstseq.RemoveAt(firstseq.Count - 1);
-            //        }
-            //        else
-            //        {
-            //            longSeq = firstseq.ToList();
-            //            longSeq.AddRange(seqLists[i]);
-            //            // extend the "first seq"
-            //            break;
-            //        }
-            //    }
-            //    dropped = 0;
-            //}
-
-            return longSeq;
-        }
-        
-        public static List<int> CalculateSubsequence(int[] Ai, int offset = 0)
-        {
-            List<int> sequence = new List<int>();
-
-            for (int i = offset; i < Ai.Length; i++)
-            {
-                if (sequence.Count == 0)
-                {
-                    sequence.Add(i);
-                }
-                else
-                {
-                    if (Ai[sequence.Last()] < Ai[i])
-                    {
-                        sequence.Add(i);
+                        remainder.Add(A);
                     }
                 }
-            }
-
-            return sequence;
-        }
-        
-        public static List<int> CalculateSubsequenceWithRemainder(int[] Ai, out IList<int> remainder)
-        {
-            List<int> sequence = new List<int>();
-            remainder = new List<int>();
-            for (int i = 0; i < Ai.Length; i++)
-            {
-                if (sequence.Count == 0)
-                {
-                    sequence.Add(Ai[i]);
-                }
-                else
-                {
-                    if (sequence.Last() < Ai[i])
-                    {
-                        sequence.Add(Ai[i]);
-                    }
-                    else
-                    {
-                        remainder.Add(Ai[i]);
-                    }
-                }
+                currentIndex++;
             }
 
             return sequence;
         }
 
-        public static List<int> FindLongestSubsequence(int [] Ai, int [] Wi)
+        public static void SpecialInsert(List<int> seq, int value, int endIndex)
         {
-            List<int> seq = new List<int>();
-            List<List<int>> seqs = new List<List<int>>();
-            IList<int> remainder;
-
-            seqs.Add(Program.CalculateSubsequenceWithRemainder(Ai, out remainder));
-
-            while (true)
+            for (int i = 0; i < endIndex; i++)
             {
-                if (remainder.Count < seqs.Last().Count)
+                if (i + 1 <= endIndex)
                 {
-                    break;
-                }
-                else
-                {
-                    seqs.Add(Program.CalculateSubsequenceWithRemainder(remainder.ToArray(), out remainder));
-                }
-            }
-
-            // find the largest subseqence weight
-            
-            int len = 0;
-            int itemIndex = 0;
-            int indexer = 0;
-            int maxWeight = 0;
-            foreach (var subseq in seqs)
-            {
-                //Premise 2:
-                //int weightedsum = 0;
-                //foreach (var element in subseq)
-                //{
-                //    weightedsum += Wi[Array.IndexOf(Ai, element)];
-                //}
-
-                //if (weightedsum > maxWeight)
-                //{
-                //    maxWeight = weightedsum;
-                //    itemIndex = indexer;
-                //}
-
-
-                // Premise 1: not true
-                // this does not work
-                if (subseq.Count > len)
-                {
-                    seq = subseq.ToList();
-                    len = subseq.Count;
-                    itemIndex = indexer;
-                }
-                indexer++;
-            }
-
-
-            seqs.RemoveAt(itemIndex);
-
-            seq = AppendToSubSequence(Ai, seq, seqs);
-                        
-            return seq;
-        }
-
-        private static List<int> AppendToSubSequence(int[] Ai, List<int> seq, List<List<int>> seqs)
-        {
-            List<int> beginPart = new List<int>();
-            List<int> endPart = new List<int>();
-            List<int> middlePart = new List<int>();
-
-            foreach (var subseq in seqs)
-            {
-                beginPart.AddRange(subseq.FindAll(a => a < seq.First()));
-                middlePart.AddRange(subseq.FindAll(a => a > seq.First() && a < seq.Last())); 
-                endPart.AddRange(subseq.FindAll(a => a > seq.Last()));
-            }
-
-            //sort
-            int lowerindexbound = Array.IndexOf(Ai, seq.First());
-            int upperindexbound = Array.IndexOf(Ai, seq.Last());
-
-            // append
-            List<int> lowerindexmap = new List<int>();
-            List<int> middleindexmap = new List<int>();
-            List<int> upperindexmap = new List<int>();
-
-            foreach (var a in beginPart)
-            {
-                int index = Array.IndexOf(Ai, a);
-                if (lowerindexbound > index)
-                    lowerindexmap.Add(index);
-            }
-
-            foreach (var a in endPart)
-            {
-                int index = Array.IndexOf(Ai, a);
-                if (upperindexbound < index)
-                    upperindexmap.Add(index);
-            }
-
-
-            //List<int> remainderSubsequence = new List<int>();
-            
-            foreach (var a in middlePart)
-            {
-                int index = Array.IndexOf(Ai, a);
-                if (lowerindexbound < index && index < upperindexbound)
-                    middleindexmap.Add(index);
-            }
-
-            //Issue: Lowest Index has The highest "a" in either beginPart or endPart
-            //Addresses here
-            lowerindexmap.Sort();
-            middleindexmap.Sort();
-            upperindexmap.Sort();
-
-
-            foreach (var i in middleindexmap)
-            {
-                int a = Ai[i];
-                for (int j = 0; j < seq.Count; j++)
-                {
-                    // if it between j and j+1
-                    if (a > seq[j] && j + 1 < seq.Count)
+                    if (seq[i] < value && value < seq[i + 1])
                     {
-                        if (a < seq[j + 1])
-                        {
-                            seq.Insert(j + 1, a);
-                            break;
-                        }
+                        seq.Insert(i + 1, value);
                     }
                 }
-
             }
 
+        }
 
-            foreach (var i in upperindexmap)
+        public static List<long> FindLongestSubsequence(int[] Ai, int[] Wi)
+        {
+            WeightedSubsequence.CreateTable(Ai);
+            WeightedSubsequence seq = new WeightedSubsequence(Ai[0]);
+
+            List<long> weights = new List<long>(); 
+            //List<WeightedSubsequence> wseqs = new List<WeightedSubsequence>();
+            List<int> revisitlog = new List<int>();
+
+            for (int i = 1; i < Ai.Length; i++)
             {
-                int a = Ai[i];
-                if (seq.Last() < a)
+                if (seq.TryInsert(Ai[i]) == -1)
                 {
-                    seq.Add(a);
+                    revisitlog.Add(Ai[i]);
                 }
             }
 
+            weights.Add(seq.CalculateWeight(Wi));
+            //wseqs.Add(seq);
 
-            lowerindexmap.Reverse();
-            foreach (var i in lowerindexmap)
+            foreach (var r in revisitlog)
             {
-                int a = Ai[i];
-                if (seq.First() > a)
+                seq = new WeightedSubsequence(r);
+                for (int i = 0; i < Ai.Length; i++)
                 {
-                    seq.Insert(0, a);
+                    if (seq.TryInsert(Ai[i]) == -1)
+                    {
+                        //Something to revisit later
+                        ;
+                    }
                 }
+                //wseqs.Add(seq);
 
+                weights.Add(seq.CalculateWeight(Wi));
             }
 
-            //// Check indies, must be in ascending order
-            //List<int> seqIndexs = new List<int>();
-            //foreach (var a in seq)
-            //{
-            //    int index = Array.IndexOf(Ai, a);
-            //    seqIndexs.Add(index);
-            //}
-
-            // no duplicates
-            //return seq.Union(remainderSubsequence).ToList();
-            return seq;
+            return weights;
         }
 
     }
