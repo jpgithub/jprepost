@@ -159,15 +159,15 @@ namespace SubsequenceWeighting
             int pPlusOne = currentPivotIndex;
             int pMinusOne = currentPivotIndex;
 
-            if( currentPivotIndex + 1 < subsequence.Count)
-            {
-                pPlusOne += 1;
-            }
+            //if( currentPivotIndex + 1 < subsequence.Count)
+            //{
+            //    pPlusOne += 1;
+            //}
 
-            if (currentPivotIndex - 1 > 0)
-            {
-                pMinusOne -= 1;
-            }
+            //if (currentPivotIndex - 1 > 0)
+            //{
+            //    pMinusOne -= 1;
+            //}
             
             // Check Index
             if (inverseTable[a] < inverseTable[subsequence.First()])
@@ -219,7 +219,8 @@ namespace SubsequenceWeighting
                 {
                     if (seq[i] < value && value < seq[i + 1])
                     {
-                        seq.Insert(i + 1, value);
+                        if( inverseTable[seq[i]] < inverseTable[value] && inverseTable[value] < inverseTable[seq[i +1]]) 
+                            seq.Insert(i + 1, value);
                     }
                 }
             }
@@ -234,7 +235,8 @@ namespace SubsequenceWeighting
                 {
                     if (seq[i] < value && value < seq[i + 1])
                     {
-                        seq.Insert(i + 1, value);
+                        if (inverseTable[seq[i]] < inverseTable[value] && inverseTable[value] < inverseTable[seq[i + 1]]) 
+                            seq.Insert(i + 1, value);
                     }
                 }
             }
