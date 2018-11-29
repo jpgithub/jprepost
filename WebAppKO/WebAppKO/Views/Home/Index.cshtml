@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- This is called "view" of HTML markup that defines the appearance of UI -->
+
+<p>First name: <span data-bind="text: firstName"></span></p>
+<p>Last name: <span data-bind="text: lastName"></span></p>
+
+<p>First name: <input data-bind="value: firstName" /></p>
+<p>Last name: <input data-bind="value: lastName" /></p>
+
+<p>Full name: <span data-bind="text: fullName"></span></p>
+
+<h2>Friends</h2>
+
+<ul data-bind="template: {name:'friendsTemplate', foreach:friends}"></ul>
+
+<script id="friendsTemplate" type="text/html">
+    <li>
+        <span data-bind="text: name"></span>
+    </li>
+</script>
+
+<button data-bind="click: addFriend">Add friend</button>
+
+<script type="text/javascript">
+    function friend(name) {
+        return {
+            name: ko.observable(name)
+        };
+    }
+
+    var viewModel = {
+        firstName: ko.observable("Bert"),
+        lastName: ko.observable("Smith"),
+        friends: ko.observableArray([new friend("Steve"), new friend("Annie")]),
+        addFriend: function () {
+            this.friends.push(new friend("Another"));
+        }
+    };
+
+    viewModel.fullName = ko.dependentObservable(function () {
+        return this.firstName() + " " + this.lastName();
+    }, viewModel);
+
+    ko.applyBindings(viewModel);
+</script>
