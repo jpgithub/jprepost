@@ -1,3 +1,9 @@
 ud851-Exercises.zip
 friendlychat.zip
 *.suo
+/GrouperApp/.vs/GrouperApp/v15/Server/sqlite3
+/GrouperApp/GrouperApp/obj/Debug
+/GrouperApp/GrouperApp/bin/Debug/GrouperApp.exe
+/GrouperApp/GrouperApp/bin/Debug/GrouperApp.exe.config
+*.pdb
+*.pdb
