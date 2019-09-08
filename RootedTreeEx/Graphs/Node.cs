@@ -11,24 +11,39 @@ namespace Graphs
     /// This class represent a graph node,
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Node<T> : IEnumerable
+    public class Node<T> : IEnumerable, IBSNode<T>
     {
-        private T data;
-        private HashSet<Node<T>> children;        
+        //private T data;
+        private HashSet<Node<T>> children;
 
         public Node(T data)
         {
-            this.data = data;
+            NodeData = data;
             children = new HashSet<Node<T>>();
         }
 
+        public Node(T data, IEqualityComparer<Node<T>> equalityComparer)
+        {
+            NodeData = data;
+            children = new HashSet<Node<T>>(equalityComparer);
+        }
+        
         /// <summary>
-        /// Add child Node
+        /// Add child Node by value
         /// </summary>
         /// <param name="data"></param>
         public void AddChild(T data)
         {
             children.Add(new Node<T>(data));
+        }
+
+        /// <summary>
+        /// Add child Node by reference
+        /// </summary>
+        /// <param name="data"></param>
+        public void AddChild(Node<T> data)
+        {
+            children.Add(data);
         }
 
         /// <summary>
@@ -50,18 +65,9 @@ namespace Graphs
             return children.ElementAt(i);
         }
 
-        //public T NodeData
-        //{
-        //    get
-        //    {
-        //        return this.Data;
-        //    }
-        //    set
-        //    {
-        //        this.Data = value;
-        //    }
-        //}
-
+        /// <summary>
+        /// Check if this node has any child
+        /// </summary>
         public bool IsChildExist
         {
             get
@@ -70,55 +76,56 @@ namespace Graphs
             }
         }
 
-        public T NodeData { get => data; set => data = value; }
+        public T NodeData { get; set; }
 
-        //public void Traverse(Node<T> node, Action<Node<T>> nodeAction)
-        //{
-        //    nodeAction.Invoke(node);
-        //    foreach (var kidNode in node.children)
-        //    {
-        //        Traverse(kidNode, nodeAction);
-        //    }
-        //}
+        public Node<T> GetRightNode
+        {
+            get
+            {
+                if (children.Count == 1)
+                {
+                    return GetChild(0);
+                }
+                else
+                {
+                    return OrderByBSRule().ElementAtOrDefault(1);
+                }
+            }
+        }
 
-        /// <summary>
-        /// Return Number of Children
-        /// </summary>
-        //public int ChildrenSize
-        //{
-        //    get
-        //    {
-        //        return children.Count;
-        //    }
-        //}
-
-        /// <summary>
-        /// Move to the next child of this node starting from the left hand side
-        /// </summary>
-        /// <returns></returns>
-        //public bool MoveNext()
-        //{
-        //    position++;
-        //    return position < children.Count;
-        //}
-
-        /// <summary>
-        /// Reset back to the first child of this node starting from the left hand side
-        /// </summary>
-        //public void Reset()
-        //{
-        //    position = - 1;
-        //}
+        public Node<T> GetLeftNode
+        {
+            get
+            {
+                return OrderByBSRule().ElementAtOrDefault(0);
+            }
+        }
 
         public IEnumerator GetEnumerator()
         {
             return this.children.GetEnumerator();
         }
 
-        /// <summary>
-        /// Current Child of this node
-        /// </summary>
-        //public object Current => this.children.ElementAt(position);
+        public IOrderedEnumerable<Node<T>> OrderByBSRule()
+        {
+            return children.OrderBy(c => c.NodeData);
+        }
 
+        /// <summary>
+        /// Add a Child to this node. [Max of Two children]
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="equalityComparer"></param>
+        public void AddChild(T data, IEqualityComparer<Node<T>> equalityComparer)
+        {
+            if (children.Count < 2)
+            {
+                children.Add(new Node<T>(data, equalityComparer));
+            }
+            else
+            {
+                throw new ArgumentException("Execeed BSTree Child Limit of Two");
+            }
+        }
     }
 }
