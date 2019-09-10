@@ -19,6 +19,8 @@ namespace TreeExercise
 
         static void Main(string[] args)
         {
+            var sa = new SuffixArray("dbac");
+            sa.AshtonString();
             //BsTreeEx();
 
             //int ans = SimilarityStrings();
