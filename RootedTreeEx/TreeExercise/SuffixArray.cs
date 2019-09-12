@@ -24,7 +24,56 @@ namespace TreeExercise
             //ansNode = new Node<string>(string.Empty);
             //StringBuilder sortedstr = new StringBuilder();
 
+            // using substring, solution for both repeated character and non-repeated character
+            for (int i = 0; i < givenstr.Length; i++)
+            {
+                for (int j = i + 1; j <= givenstr.Length; j++)
+                {
+                    var ss = givenstr.Substring(i, j - i);
+                    if (!ansList.Contains(ss))
+                        ansList.Add(ss);
+                }
+            }
+
+            ansList.Sort();
+
+            int k = 1;
+            char cc;
+            string longstr = string.Empty;
+            foreach(var item in ansList)
+            {
+                longstr += item;                
+                if(longstr.Length >= k)
+                {
+                    cc = longstr[k - 1];
+                    break;
+                }
+            }
+
+
+            
+            //for (int i = 0; i < ansList.Count; i++)
+            //{
+            //    var str = ansList[i];
+            //    sum += ansList[i].Length;
+            //    if (sum >= k)
+            //    {
+            //        cc = str[k - sum + 1];
+            //        break;
+            //    }
+            //}
+
+            // repeating character causes errors
             // level one
+            //TriangleNumberApproach();
+
+        }
+
+        /// <summary>
+        /// O(n^2)
+        /// </summary>
+        private void TriangleNumberApproach()
+        {
             foreach (var c in givenstr.ToCharArray())
             {
                 //ansNode.AddChild(c.ToString());
@@ -35,12 +84,12 @@ namespace TreeExercise
             // level two
             char[] aaa = givenstr.ToCharArray();
             for (int i = 0; i + 1 < givenstr.Length; i++)
-            {                
+            {
                 var union = (aaa[i].ToString() + aaa[i + 1].ToString());
                 //ansList.Add(aaa[i].ToString());
                 //ansList.Add(aaa[i+1].ToString());
                 ansList.Add(union);
-                
+
             }
 
             // duplicates startes here
@@ -52,30 +101,20 @@ namespace TreeExercise
             else
             {
                 ansList.Sort();
-            }            
+            }
 
             int sum = 0;
             char cc;
-            for(int i = 0; i < ansList.Count; i++)
+            for (int i = 0; i < ansList.Count; i++)
             {
                 var str = ansList[i];
                 sum += ansList[i].Length;
                 if (sum == 3)
                 {
-                    cc = str[sum-i-1];
+                    cc = str[sum - i - 1];
                     break;
                 }
             }
-
-            //foreach (var str in ansList)
-            //{
-            //    sum += str.Length;
-            //    if (sum == 3)
-            //    {
-            //        var c = str[sum];
-            //    }
-            //    //longans += str;
-            //}
         }
 
         private static List<string> CombineStringNodes(List<string> nodelist)
