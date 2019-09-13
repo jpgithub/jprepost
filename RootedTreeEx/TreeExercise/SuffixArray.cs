@@ -11,6 +11,7 @@ namespace TreeExercise
         //Node<string> ansNode;
         private string givenstr;
         private List<string> ansList = new List<string>();
+        private HashSet<string> ansSet = new HashSet<string>();
         public SuffixArray(string s)
         {
             givenstr = s;
@@ -30,28 +31,40 @@ namespace TreeExercise
                 for (int j = i + 1; j <= givenstr.Length; j++)
                 {
                     var ss = givenstr.Substring(i, j - i);
-                    if (!ansList.Contains(ss))
+                    if (!ansList.Contains(ss)) // List Contain has poor speed
                         ansList.Add(ss);
                 }
             }
-
+            int firstLength = ansList.Count;
             ansList.Sort();
+            //ansList.Clear();
 
-            int k = 1;
-            char cc;
-            string longstr = string.Empty;
-            foreach(var item in ansList)
+            MirrorReduction(givenstr,0,givenstr.Length,ansSet);
+
+            int secondLength = ansSet.Count;
+
+            ansList = ansSet.ToList();
+            if (firstLength == secondLength)
             {
-                longstr += item;                
-                if(longstr.Length >= k)
+                ansList.Sort();
+
+                int k = 3;
+                char cc;
+                string longstr = string.Empty;
+                foreach (var item in ansList)
                 {
-                    cc = longstr[k - 1];
-                    break;
+                    longstr += item;
+                    if (longstr.Length >= k)
+                    {
+                        cc = longstr[k - 1];
+                        break;
+                    }
                 }
             }
-
-
-            
+            else
+            {
+                ;
+            }
             //for (int i = 0; i < ansList.Count; i++)
             //{
             //    var str = ansList[i];
@@ -67,6 +80,62 @@ namespace TreeExercise
             // level one
             //TriangleNumberApproach();
 
+        }
+
+        private void MirrorReduction(string input, int startingIndex, int endingIndex, HashSet<string> output)
+        {
+            if (input == string.Empty)
+            {
+                return;
+            }
+
+            for (int i = 1; i <= endingIndex; i++)
+            {
+                string ssBegin = input.Substring(startingIndex, i);
+                string ssEnd = input.Substring(i, endingIndex - i);
+
+                if (string.Empty != ssBegin && !output.Contains(ssBegin))
+                    output.Add(ssBegin);
+                if (string.Empty != ssEnd && !output.Contains(ssEnd))
+                    output.Add(ssEnd);
+            }
+
+            int newEnd = endingIndex - 2;
+
+            if (newEnd < 0)
+            {
+                return;
+            }
+
+            MirrorReduction(input.Substring(startingIndex + 1, endingIndex - 2), startingIndex, newEnd, output);
+        }
+
+        private void MirrorReduction(string input, int startingIndex, int endingIndex, List<string> output)
+        {
+            if(input == string.Empty)
+            {
+                return;
+            }
+
+            for (int i = 1; i <= endingIndex; i++)
+            {
+                string ssBegin = input.Substring(startingIndex, i);
+                string ssEnd = input.Substring(i, endingIndex - i);
+
+                if (string.Empty != ssBegin && !output.Contains(ssBegin))
+                    output.Add(ssBegin);
+                if (string.Empty != ssEnd && !output.Contains(ssEnd))
+                    output.Add(ssEnd);
+            }
+
+            int newEnd = endingIndex - 2;
+
+            if(newEnd < 0)
+            {
+                return;
+            }
+
+            MirrorReduction(input.Substring(startingIndex + 1, endingIndex - 2), startingIndex, newEnd, output);
         }
 
         /// <summary>

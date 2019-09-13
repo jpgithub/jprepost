@@ -19,7 +19,7 @@ namespace TreeExercise
 
         static void Main(string[] args)
         {
-            var sa = new SuffixArray("dbac");
+            var sa = new SuffixArray("dbaafec");
             sa.AshtonString();
             //BsTreeEx();
 
