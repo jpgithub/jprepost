@@ -1,4 +1,5 @@
 ﻿using Graphs;
+using Sorting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,18 @@ namespace TreeExercise
 
         static void Main(string[] args)
         {
-            var sa = new SuffixArray("dbaafec");
-            sa.AshtonString();
+            //var sa = new SuffixArray("abaab");
+            //var sa = new SuffixArray("dbac");
+            //var sa = new SuffixArray("abaab");
+
+            //sa.AshtonString(3);
             //BsTreeEx();
 
             //int ans = SimilarityStrings();
+            // 1,8,7,2,4,9,11
+            var mergsorter = new MergeSort(new int[] { 6, 5, 3 });
+            mergsorter.Sort();
+            var ans = mergsorter.Result;
         }
 
         private static void BsTreeEx()
