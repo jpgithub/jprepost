@@ -51,3 +51,6 @@ RootedTreeEx/TreeExercise/obj/Debug/TreeExercise.csproj.CoreCompileInputs.cache
 RootedTreeEx/TreeExercise/obj/Debug/TreeExercise.csproj.FileListAbsolute.txt
 RootedTreeEx/TreeExercise/obj/Debug/TreeExercise.csprojAssemblyReference.cache
 RootedTreeEx/TreeExercise/obj/Debug/TreeExercise.exe
+*.dll
+*.txt
+*.cache
