@@ -20,6 +20,7 @@ namespace Graphs
 
         public void Insertion(Node<int> currentnode, int data)
         {
+            //No duplicated node data rule is apply here
             if (currentnode.NodeData > data)
             {
                 if (currentnode.GetLeftNode != null && currentnode.GetLeftNode.NodeData < currentnode.NodeData)
