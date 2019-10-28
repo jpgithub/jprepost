@@ -25,13 +25,38 @@ namespace TreeExercise
             //var sa = new SuffixArray("abaab");
 
             //sa.AshtonString(3);
+            //AVLTreeEx();
             //BsTreeEx();
-
             //int ans = SimilarityStrings();
             // 1,8,7,2,4,9,11
-            var mergsorter = new MergeSort(new int[] { 6, 5, 3 });
-            mergsorter.Sort();
-            var ans = mergsorter.Result;
+            var swq = new SubweightedSeq();
+
+            int[] b = new int[] { 5, 1, 2, 4, 3, 1, 2, 3, 4 };
+            int[] w = new int[] { 10, 20, 30, 40, 50, 15, 15, 15, 90 };
+
+            if (swq.LoadSubweightedSeq(b, w))
+            {
+                ;
+            }
+
+            // Mergesort
+            //var mergsorter = new MergeSort(new int[] { 6, 5, 3 });
+            //mergsorter.Sort();
+            //var ans = mergsorter.Result;
+        }
+
+        private static void AVLTreeEx()
+        {
+            var avltree = new AVLTree(4);
+
+            int[] inputs = new int[] { 8, 10, 12, 2 };
+
+            //// Traverse insertion action
+            foreach (int datapoint in inputs)
+            {
+                avltree.Insertion(datapoint);
+            }
+                                   
         }
 
         private static void BsTreeEx()
