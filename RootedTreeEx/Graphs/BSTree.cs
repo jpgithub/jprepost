@@ -134,12 +134,12 @@ namespace Graphs
 
         public void Maximum(Node<int> startingNode)
         {
-            int min = -1;
-            Traverse(startingNode, (minNode) =>
+            int max = -1;
+            Traverse(startingNode, (maxNode) =>
             {
-                if (minNode.NodeData < min)
+                if (maxNode.NodeData < max)
                 {
-                    min = minNode.NodeData;
+                    max = maxNode.NodeData;
                 }
             });
         }
@@ -176,7 +176,7 @@ namespace Graphs
         }
 
         /// <summary>
-        /// Traverse the entire tree, inorder fashion
+        /// Traverse the entire tree, postorder fashion
         /// </summary>
         /// <param name="node"></param>
         /// <param name="nodeAction"></param>

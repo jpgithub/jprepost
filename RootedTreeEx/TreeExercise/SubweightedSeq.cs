@@ -13,7 +13,9 @@ namespace TreeExercise
     public class SubweightedSeq
     {
         private List<Node<Tuple<int,int>>> treelist = new List<Node<Tuple<int, int>>>();
-        
+        private List<int> weightlist = new List<int>();
+        private int maxweight = 0;
+
         public bool LoadSubweightedSeq(int [] b,int [] w)
         {
             if(b.Length != w.Length)
@@ -31,7 +33,7 @@ namespace TreeExercise
 
                     if(rootb < b[i])
                     {
-                        Traverse(node, AddChild(b, w, i));
+                        Traverse(node, AddChild(b[i], w[i]));
                         enableAdd = false;
                         // new node add
                     }
@@ -41,21 +43,53 @@ namespace TreeExercise
                 {
                     treelist.Add(new Node<Tuple<int, int>>(Tuple.Create<int, int>(b[i], w[i])));
                     continue;
-                }
-                
+                }                
             }
             return true;
         }
 
-        private static Action<Node<Tuple<int, int>>> AddChild(int[] b, int[] w, int i)
+        internal int MaxSubweightedSeq()
+        {
+            foreach (var root in treelist)
+            {
+                CalculatedSubweightSeq(root);
+            }
+            //maxweight = weightlist.Max();
+            return maxweight;
+        }
+
+        internal void CalculatedSubweightSeq(Node<Tuple<int, int>> root, int total = 0)
+        {
+            if (!root.IsChildExist)
+            {
+                int ans = root.NodeData.Item2 + total;
+
+                if(ans > maxweight)
+                {
+                    maxweight = ans;
+                }
+
+                weightlist.Add(ans);
+            }
+            else
+            {
+                int weight = root.NodeData.Item2;
+                foreach (Node<Tuple<int, int>> kidNode in root)
+                {
+                   CalculatedSubweightSeq(kidNode,total + weight);
+                }
+            }
+        }
+
+        private static Action<Node<Tuple<int, int>>> AddChild(int b, int w)
         {
             return (currentnode) =>
             {
                 // Add Child Condition
-                if (currentnode.NodeData.Item1 < b[i])
+                if (currentnode.NodeData.Item1 < b)
                 {
-                    currentnode.AddChild(Tuple.Create<int, int>(b[i], w[i]));
-                    return;
+                    currentnode.AddChild(Tuple.Create<int, int>(b, w));
+                    //return;
                 }
             };
         }

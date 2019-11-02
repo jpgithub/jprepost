@@ -31,12 +31,17 @@ namespace TreeExercise
             // 1,8,7,2,4,9,11
             var swq = new SubweightedSeq();
 
-            int[] b = new int[] { 5, 1, 2, 4, 3, 1, 2, 3, 4 };
-            int[] w = new int[] { 10, 20, 30, 40, 50, 15, 15, 15, 90 };
+            //int[] b = new int[] { 5, 1, 2, 4, 3, 1, 2, 3, 4 };
+            //int[] b = new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            //int[] w = new int[] { 10, 20, 30, 40, 50, 15, 15, 15, 90 };
+
+            int[] b = new int[] { 1, 2, 3, 4, 1, 2, 3, 4 };
+            int[] w = new int[] { 10, 20, 30, 40, 15, 15, 15, 50 };
 
             if (swq.LoadSubweightedSeq(b, w))
             {
-                ;
+                int total;
+                total = swq.MaxSubweightedSeq();
             }
 
             // Mergesort

@@ -15,13 +15,15 @@ namespace Graphs
     {
         //private T data;
         private HashSet<Node<T>> children;
+        private int depth = 0;
 
-        public Node(T data)
+        public Node(T data, int level = 0)
         {
             NodeData = data;
             children = new HashSet<Node<T>>();
+            depth = level;
         }
-
+        
         public Node(T data, IEqualityComparer<Node<T>> equalityComparer)
         {
             NodeData = data;
@@ -34,8 +36,9 @@ namespace Graphs
         /// <param name="data"></param>
         public void AddChild(T data)
         {
-            children.Add(new Node<T>(data));
+            children.Add(new Node<T>(data, depth + 1));
         }
+
 
         /// <summary>
         /// Add child Node by reference
