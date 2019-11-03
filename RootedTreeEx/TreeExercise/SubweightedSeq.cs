@@ -45,8 +45,7 @@ namespace TreeExercise
                     treelist.Add(new Node<Tuple<int, int>>(Tuple.Create<int, int>(b[i], w[i])));
                     continue;
                 }                
-            }
-            
+            }            
             return true;
         }
 
@@ -65,8 +64,6 @@ namespace TreeExercise
                 {
                     maxweight = ans;
                 }
-
-                //weightlist.Add(ans);
             }
             else
             {
@@ -78,17 +75,15 @@ namespace TreeExercise
             }
         }
 
-        internal int MaxSubweightedSeq()
+        public int MaxSubweightedSeq
         {
-            //foreach (var root in treelist)
-            //{
-            //    CalculatedSubweightSeq(root);
-            //}
-            //maxweight = weightlist.Max();
-            return maxweight;
+            get
+            {
+                return maxweight;
+            }
         }
 
-        internal void CalculatedSubweightSeq(Node<Tuple<int, int>> root, int total = 0)
+        private void CalculatedSubweightSeq(Node<Tuple<int, int>> root, int total = 0)
         {
             if (!root.IsChildExist)
             {

@@ -41,7 +41,7 @@ namespace TreeExercise
             if (swq.LoadSubweightedSeq(b, w))
             {
                 int total;
-                total = swq.MaxSubweightedSeq();
+                total = swq.MaxSubweightedSeq;
             }
 
             // Mergesort
