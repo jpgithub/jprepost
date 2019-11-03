@@ -33,7 +33,8 @@ namespace TreeExercise
 
                     if(rootb < b[i])
                     {
-                        Traverse(node, AddChild(b[i], w[i]));
+                        //Traverse(node, AddChild(b[i], w[i]));
+                        CalculatedSubweightSeq(node, b[i], w[i]);
                         enableAdd = false;
                         // new node add
                     }
@@ -45,15 +46,44 @@ namespace TreeExercise
                     continue;
                 }                
             }
+            
             return true;
+        }
+
+        private void CalculatedSubweightSeq(Node<Tuple<int, int>> node, int b, int w, int total = 0)
+        {
+            if (node.NodeData.Item1 < b)
+            {
+                node.AddChild(Tuple.Create<int, int>(b, w));
+            }
+
+            if (!node.IsChildExist)
+            {
+                int ans = node.NodeData.Item2 + total;
+
+                if (ans > maxweight)
+                {
+                    maxweight = ans;
+                }
+
+                //weightlist.Add(ans);
+            }
+            else
+            {
+                int weight = node.NodeData.Item2;
+                foreach (Node<Tuple<int, int>> kidNode in node)
+                {
+                    CalculatedSubweightSeq(kidNode, b, w, total + weight);
+                }
+            }
         }
 
         internal int MaxSubweightedSeq()
         {
-            foreach (var root in treelist)
-            {
-                CalculatedSubweightSeq(root);
-            }
+            //foreach (var root in treelist)
+            //{
+            //    CalculatedSubweightSeq(root);
+            //}
             //maxweight = weightlist.Max();
             return maxweight;
         }
