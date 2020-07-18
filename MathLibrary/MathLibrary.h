@@ -7,6 +7,12 @@
 #define MATHLIBRARY_API __declspec(dllimport)
 #endif
 
+typedef struct matrixdata
+{
+    bool istransposed;
+    int value;
+};
+
 // The Fibonacci recurrence relation describes a sequence F
 // where F(n) is { n = 0, a
 //               { n = 1, b
@@ -32,3 +38,10 @@ extern "C" MATHLIBRARY_API unsigned long long fibonacci_current();
 
 // Get the position of the current value in the sequence.
 extern "C" MATHLIBRARY_API unsigned fibonacci_index();
+
+// Input string equation
+extern "C" MATHLIBRARY_API int equation(const char* expression);
+
+extern "C" MATHLIBRARY_API int matrixopertion(struct matrixdata* arrayofmd);
+
+extern "C" MATHLIBRARY_API int matrixopertionA(struct matrixdata* arrayofmd, int sizeofarray);

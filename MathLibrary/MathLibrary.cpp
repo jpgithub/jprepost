@@ -2,6 +2,7 @@
 #include "pch.h" // use stdafx.h in Visual Studio 2017 and earlier
 #include <utility>
 #include <limits.h>
+#include <iostream>
 #include "MathLibrary.h"
 
 // DLL internal state variables:
@@ -53,4 +54,74 @@ unsigned long long fibonacci_current()
 unsigned fibonacci_index()
 {
     return index_;
+}
+
+int equation(const char* expression)
+{
+    std::cout << expression << std::endl;
+    return 0;
+}
+
+int matrixopertion(matrixdata* arrayofmd)
+{
+    int status = 0;
+    try
+    {
+        for (int i = 0; i < 1; i++)
+        {
+            if (((i + 1) % 2) == 0)
+            {
+                //matrixdata s;
+                //s.istransposed = 0;
+                arrayofmd[i].istransposed = true;
+                arrayofmd[i].value = (i+1);
+            }
+            else
+            {
+                //matrixdata s;
+                //s.istransposed = 1;
+                arrayofmd[i].istransposed = false;
+                arrayofmd[i].value = (i + 1);
+            }
+        }
+    }
+    catch(...)
+    {
+        status = -1;
+    }   
+
+    //*arrayofmd = *amd;
+    return status;
+}
+
+int matrixopertionA(matrixdata* arrayofmd, int sizeofarray)
+{
+    int status = 0;
+    try
+    {
+        for (int i = 0; i < sizeofarray; i++)
+        {
+            if (((i + 1) % 2) == 0)
+            {
+                //matrixdata s;
+                //s.istransposed = 0;
+                arrayofmd[i].istransposed = true;
+                arrayofmd[i].value = (i + 1);
+            }
+            else
+            {
+                //matrixdata s;
+                //s.istransposed = 1;
+                arrayofmd[i].istransposed = false;
+                arrayofmd[i].value = (i + 1);
+            }
+        }
+    }
+    catch (...)
+    {
+        status = -1;
+    }
+
+    //*arrayofmd = *amd;
+    return status;
 }
