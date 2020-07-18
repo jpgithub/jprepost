@@ -4,13 +4,13 @@
 class PrimaryController :
 	public BusHub
 {
-private:
-	static std::stack<PrimaryController*> housekeeping;
+//private:
+//	static std::stack<PrimaryController*> housekeeping;
 public:
 	PrimaryController();
 	~PrimaryController();
-	static PrimaryController* Promote();
-	static bool Demote(PrimaryController* currentController);
+	/*static PrimaryController* Promote();
+	static bool Demote(PrimaryController* currentController);*/
 
 	void WriteToBusHub(const Packet& msg, std::function<void(int)> method);
 	void ReadFromBusHub(Packet& msg, std::function<void(int)> method);

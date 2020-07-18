@@ -19,7 +19,7 @@ namespace Calculator
 
         static void Main(string[] args)
         {
-            ulong a = 1;
+            ulong a = 0;
             ulong b = 1;
             fibonacci_init(a,b);
             uint indexans = fibonacci_index();
@@ -29,6 +29,10 @@ namespace Calculator
                 indexans = fibonacci_index();
                 Console.Out.WriteLine(string.Format("Index: {0}", indexans));
                 Console.Out.WriteLine(string.Format("Current: {0}", currentans));
+                if(indexans >= 93)
+                {
+                    break;
+                }
             }
             
         }

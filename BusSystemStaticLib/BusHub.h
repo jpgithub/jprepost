@@ -17,7 +17,7 @@ private:
 	std::map<int, std::thread::id> connections;
 	const int primarycontrollerid = 0;
 protected:
-	const Packet ObserveBus(Drx direction);
+	bool ObserveBus(Drx direction, Packet& msg);
 	bool TryTakeBusPacket(Drx direction);
 	bool WriteBusPacket(Drx direction, const Packet& msg);
 	std::pair<std::map<int, std::thread::id>::iterator, bool> ConnectToBusHub(int id, std::thread::id thread_id);

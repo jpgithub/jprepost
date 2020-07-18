@@ -22,8 +22,7 @@ void IODevice::WriteToBusHub(const Packet& msg)
 
 void IODevice::ReadFromBusHub(Packet& msg)
 {
-	msg = ObserveBus(Drx::MS);
-	if (msg.Receiver == "me")
+	if (ObserveBus(Drx::MS,msg))//msg.Receiver == "me")
 	{
 		int retry = 0;
 		while (!TryTakeBusPacket(Drx::MS))

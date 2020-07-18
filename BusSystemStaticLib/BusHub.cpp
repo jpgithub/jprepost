@@ -1,17 +1,20 @@
 #include "pch.h"
 #include "BusHub.h"
 
-const Packet BusHub::ObserveBus(Drx direction)
+bool BusHub::ObserveBus(Drx direction, Packet& msg)
 {
-	if (direction == Drx::MS)
+	if (direction == Drx::MS && !bus_ms_direction.empty())
 	{
-		return bus_ms_direction.front();
+		msg = bus_ms_direction.front();
+		return true;
 	}
 
-	if (direction == Drx::SM)
+	if (direction == Drx::SM && !bus_sm_direction.empty())
 	{
-		return bus_sm_direction.front();
+		msg = bus_sm_direction.front();
+		return true;
 	}
+	return false;
 }
 
 bool BusHub::TryTakeBusPacket(Drx direction)

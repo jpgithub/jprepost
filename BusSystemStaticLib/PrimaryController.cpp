@@ -11,22 +11,22 @@ PrimaryController::PrimaryController()
 
 PrimaryController::~PrimaryController()
 {
-	while (!housekeeping.empty())
+	/*while (!housekeeping.empty())
 	{
 		housekeeping.pop();
-	}
+	}*/
 }
 
-PrimaryController* PrimaryController::Promote()
-{
-	housekeeping.push(new PrimaryController());
-	return housekeeping.top();
-}
-
-bool PrimaryController::Demote(PrimaryController* currentController)
-{
-	return currentController->RemovePrimaryController();
-}
+//PrimaryController* PrimaryController::Promote()
+//{
+//	housekeeping.push(new PrimaryController());
+//	return housekeeping.top();
+//}
+//
+//bool PrimaryController::Demote(PrimaryController* currentController)
+//{
+//	return currentController->RemovePrimaryController();
+//}
 
 void PrimaryController::WriteToBusHub(const Packet& msg)
 {
@@ -35,8 +35,10 @@ void PrimaryController::WriteToBusHub(const Packet& msg)
 
 void PrimaryController::ReadFromBusHub(Packet& msg)
 {
-	msg = ObserveBus(Drx::SM);
-	TryTakeBusPacket(Drx::SM);
+	if (ObserveBus(Drx::SM, msg))
+	{
+		TryTakeBusPacket(Drx::SM);
+	}
 }
 
 void PrimaryController::WriteToBusHub(const Packet& msg, std::function<void(int)> method)
