@@ -7,10 +7,15 @@
 #define MATHLIBRARY_API __declspec(dllimport)
 #endif
 
-typedef struct matrixdata
+typedef struct matrixobject
 {
     bool istransposed;
-    int value;
+    int data;
+};
+
+typedef struct matrixdata
+{
+    int data[128];
 };
 
 // The Fibonacci recurrence relation describes a sequence F
@@ -42,6 +47,19 @@ extern "C" MATHLIBRARY_API unsigned fibonacci_index();
 // Input string equation
 extern "C" MATHLIBRARY_API int equation(const char* expression);
 
-extern "C" MATHLIBRARY_API int matrixopertion(struct matrixdata* arrayofmd);
+extern "C" MATHLIBRARY_API int matrixopertion(struct matrixobject* arrayofmd);
 
-extern "C" MATHLIBRARY_API int matrixopertionA(struct matrixdata* arrayofmd, int sizeofarray);
+extern "C" MATHLIBRARY_API int matrixopertionA(struct matrixobject* arrayofmd, int sizeofarray);
+
+extern "C" MATHLIBRARY_API int matrixdataoperation(struct matrixdata* md, int size);
+
+extern "C" MATHLIBRARY_API int GetIndexedComputationSetSize(int* computeset, int index);
+
+extern "C" MATHLIBRARY_API int GetIndexedComputationSet(int* computeset, int buffer[], int bufferlength, int index);
+
+extern "C" MATHLIBRARY_API HANDLE AsyncComputation(int *computeset, int index);
+
+DWORD WINAPI CallbackTriggerThreadProc(LPVOID lpParam);
+
+DWORD WINAPI ComputationThread(LPVOID lpParam);
+
