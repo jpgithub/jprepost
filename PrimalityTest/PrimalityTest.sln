@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Factorization", "Factorization\Factorization.vcxproj", "{7747D7CD-7ADE-447B-BA4C-78A6DCB43A1F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LargePow", "LargePow\LargePow.vcxproj", "{B7C0411A-F739-4D6D-8B37-95524C32BEEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{7747D7CD-7ADE-447B-BA4C-78A6DCB43A1F}.Debug|Win32.Build.0 = Debug|Win32
 		{7747D7CD-7ADE-447B-BA4C-78A6DCB43A1F}.Release|Win32.ActiveCfg = Release|Win32
 		{7747D7CD-7ADE-447B-BA4C-78A6DCB43A1F}.Release|Win32.Build.0 = Release|Win32
+		{B7C0411A-F739-4D6D-8B37-95524C32BEEA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B7C0411A-F739-4D6D-8B37-95524C32BEEA}.Debug|Win32.Build.0 = Debug|Win32
+		{B7C0411A-F739-4D6D-8B37-95524C32BEEA}.Release|Win32.ActiveCfg = Release|Win32
+		{B7C0411A-F739-4D6D-8B37-95524C32BEEA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
