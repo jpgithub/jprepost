@@ -149,6 +149,16 @@ vector<USHORT> Power(ULONG base, ULONG exponent)
 	return pow_res;
 }
 
+ULONG Modular_Exponentation(ULONG base, ULONG exponent, ULONG mod_num)
+{
+	ULONG value = (ULONG)pow((double)base, (double)2) % mod_num;;
+	for (unsigned int i = 3; i < exponent; i++)
+	{ 
+		value = ((value * base) % mod_num);
+	}
+	return value;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	cout << "Hello Large Pow" <<endl;
