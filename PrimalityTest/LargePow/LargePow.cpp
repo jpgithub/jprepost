@@ -176,15 +176,36 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << i;
 	}
 	cout << endl;
+	
+	vres.clear();
 
-	auto tres = Power(2,100);
+	vres = Power(5, 20);
 
-	for (auto &i : tres)
+	for (auto& i : vres)
 	{
 		cout << i;
 	}
 	cout << endl;
 
+	vres.clear();
+
+	vres = Power(2,100);
+
+	for (auto &i : vres)
+	{
+		cout << i;
+	}
+	cout << endl;
+
+	vres.clear();
+
+	vres = Power(2, 256);
+
+	for (auto& i : vres)
+	{
+		cout << i;
+	}
+	cout << endl;
 	
 	return 0;
 }
