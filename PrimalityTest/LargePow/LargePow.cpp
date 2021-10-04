@@ -22,6 +22,25 @@ bool check_overflow(ULONG p)
 	}
 }
 
+vector<USHORT> Digits_Tokenize(ULONG many_digit)
+{
+	const USHORT base10 = 10;
+	USHORT digits_count = 0;
+	vector<USHORT> digits_tokenize;
+	ULONG md = many_digit;
+	while (md != 0)
+	{
+		USHORT d = (USHORT)(md % base10);
+		if(d != 0)
+		{
+			digits_tokenize.push_back(d);
+		}
+		md = md / base10;
+		digits_count++;
+	}
+	return digits_tokenize;
+}
+
 vector<USHORT> Large_Sum(vector<USHORT> a, vector<USHORT> b)
 {
 	const USHORT base10 = 10;
@@ -38,7 +57,7 @@ vector<USHORT> Large_Sum(vector<USHORT> a, vector<USHORT> b)
 	{
 		b[i] += a[i];
 		int r = b[i] % base10;
-		if(r != 0)
+		if(b[i] >= base10 && r != 0)
 		{
 			//// Carry out
 			b[i+1] += b[i] / base10;
@@ -46,26 +65,6 @@ vector<USHORT> Large_Sum(vector<USHORT> a, vector<USHORT> b)
 		}
 	}
 	return b;
-}
-
-//// ?
-int Multiply(int x, int res[], int res_size)
-{
-	int carry = 0;
-	for(int i = 0; i < res_size; i++)
-	{
-		int prod = res[i] * x + carry;
-		res[i] = prod % 10;
-		carry = prod /10;
-	}
-
-	while(carry)
-	{
-		res[res_size] = carry % 10;
-		carry = carry/10;
-		res_size++;
-	}
-	return res_size;
 }
 
 vector<USHORT> Multiply(vector<USHORT> res, USHORT single_digit)
@@ -101,8 +100,10 @@ vector<USHORT> Multiply(vector<USHORT> res, ULONG many_digit)
 
 	//// get the number of digits;
 	USHORT digits_count = 0;
-	vector<USHORT> digits_tokenize;
-	ULONG md = many_digit;
+	vector<USHORT> digits_tokenize = Digits_Tokenize(many_digit);
+	digits_count = digits_tokenize.size();
+
+	/*ULONG md = many_digit;
 	while (md != 0)
 	{
 		USHORT d = (USHORT)(md % base10);
@@ -112,11 +113,8 @@ vector<USHORT> Multiply(vector<USHORT> res, ULONG many_digit)
 		}
 		md = md / base10;
 		digits_count++;
-	}
+	}*/
 	
-	// one digit multiplication
-	//auto one_res = Multiply(res, (USHORT) (many_digit % base10));
-		
 	//// Check for more than 1 digits multiplication
 	//USHORT input = (USHORT)(many_digit / base10);
 	vector<USHORT> total (digits_count + 1, 0);	
@@ -132,27 +130,23 @@ vector<USHORT> Multiply(vector<USHORT> res, ULONG many_digit)
 		
 		/// Large Sum
 		total = Large_Sum(product,total);
-		//for(unsigned int j = 0; j < product.size(); j++)
-		//{
-		//	cout << product[j] << endl;
-		//	//total[j] += product[j];
-		//	////// check for carry
-		//	//int c = product[j] % base10;
-		//	//if(c != 0)
-		//	//{
-		//	//	total[j+1] += product[j] / base10;
-		//	//	total[j] = c;
-		//	//}
-		//}
 	}
 	//// descending base 10 power order
 	reverse(total.begin(),total.end());
 	return total;
 }
 
-void Power(ULONG n)
+vector<USHORT> Power(ULONG base, ULONG exponent)
 {
-
+	//// Convert
+	vector<USHORT> pow_res = Digits_Tokenize(base);
+	USHORT m = (USHORT)base;
+	for(unsigned int i = 0; i < (exponent - 1); i++)
+	{
+		pow_res = Multiply(pow_res, m);
+	}
+	reverse(pow_res.begin(),pow_res.end());
+	return pow_res;
 }
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -164,48 +158,34 @@ int _tmain(int argc, _TCHAR* argv[])
 	int res [4] = { 3, 6 };
 	vector<USHORT> vres;
 	//// 36
-	vres.push_back(6);
-	vres.push_back(3);
+	//vres.push_back(6);
+	//vres.push_back(3);
 
-	ULONG input = 421;
+	//// 421
+	vres.push_back(1);
+	vres.push_back(2);
+	vres.push_back(4);
+
+	//ULONG input = 421;
+	ULONG input = 36;
 
 	vres = Multiply(vres, input);
+
 	for (auto &i : vres)
 	{
 		cout << i;
-		
 	}
 	cout << endl;
-	////// get the number of digits;
-	//double digits = floor(log10(input));
 
-	//// one digit multiplication
-	//auto one_res = Multiply(vres, (USHORT) (input % base10));
-	//	
-	////// Check for more than 1 digits multiplication
-	//if(digits > 0)
-	//{
-	//	input = (input / base10);
-	//	//// shifting by add zero
-	//	for ( int i = (int)digits; i > 0; i--)
-	//	{
-	//		vres.insert(vres.begin(),0);
-	//		vres = Multiply(vres, input);
-	//		/// Large Sum
-	//		for(int j = 0; j < one_res.size(); j++)
-	//		{
-	//			vres[j] += one_res[j];
-	//			//// check for carry
-	//			int c = vres[j] % base10;
-	//			if(c != 0)
-	//			{
-	//				vres[j+1] += vres[j] / base10;
-	//				vres[j] = c;
-	//			}
-	//		}
-	//	}
-	//}
+	auto tres = Power(2,100);
 
+	for (auto &i : tres)
+	{
+		cout << i;
+	}
+	cout << endl;
+
+	
 	return 0;
 }
 
