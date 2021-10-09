@@ -8,98 +8,272 @@ namespace SubsequenceWeighting
 {
     public class Program
     {
+        public class WeightedStack
+        {
+            private Stack<(int, int)> ssubseq = new Stack<(int, int)>();
+            private uint weight;
+            private (int, int) bottom;
+            private bool basecorrection;
+
+            public (int,int) GetBase
+            {
+                get
+                {
+                    return bottom;
+                }
+            }
+            
+            public void BaseCorrection((int,int) nb)
+            {
+                basecorrection = true;
+                this.bottom = nb;
+            }
+            public int Count
+            {
+                get
+                {
+                    return ssubseq.Count;
+                }
+            }
+
+            public (int,int) Peek()
+            {
+                return ssubseq.Peek();
+            }
+
+            public uint Weight
+            {
+                get
+                {
+                    return this.weight + (uint)bottom.Item2;
+                }
+            }
+            public void Push((int,int) v)
+            {
+                //// Key should be increasing while weight should be decreasing
+                if (ssubseq.Count == 0)
+                {
+                    ssubseq.Push(v);
+                    bottom = v;
+                }
+                else
+                {
+                    var e = ssubseq.Peek();
+                    if (e.Item1 > v.Item1)
+                    {
+                        ssubseq.Push(v);
+                        weight += (uint)v.Item2;
+                    }
+                }
+                
+            }
+            
+            public (int,int) Pop()
+            {
+                if(ssubseq.Count == 1)
+                {
+                    //// Check base correction
+                    if(basecorrection)
+                    {
+                        ssubseq.Pop();
+                        return bottom;
+                    }
+                }
+                return ssubseq.Pop();
+            }
+        }
         public static void Main(string[] args)
         {
-            List<int> A = new List<int>();
-            List<int> W = new List<int>();
-            string[] lines = System.IO.File.ReadAllLines(@"TestCase.txt");
-            A = Array.ConvertAll(lines[1].Split(' '), Int32.Parse).ToList();
-            W = Array.ConvertAll(lines[2].Split(' '), Int32.Parse).ToList();
+            //List<int> A = new List<int>();
+            //List<int> W = new List<int>();
+            //string[] lines = System.IO.File.ReadAllLines(@"TestCase.txt");
+            //A = Array.ConvertAll(lines[1].Split(' '), Int32.Parse).ToList();
+            //W = Array.ConvertAll(lines[2].Split(' '), Int32.Parse).ToList();
+
+            List<(int, int)> sequence = new List<(int, int)>() { (1, 10), (2, 20), (3, 30), (4, 40), (1, 15), (2, 15), (3, 15), (4, 50) };
+            
+            var stckdict = new Stack<Dictionary<int, int>>();
+
+            //var dsubseq = new Dictionary<int, Stack<(int, int)>>();
+
+            var lsubseq = new List<WeightedStack>();
+
+            //var subs = CreatSubsequence(sequence.ToList());
+            
+            for (int i = 0; i < sequence.Count; i++)
+            {
+                if(sequence.Count - 1 - i == 0)
+                {
+                    break;
+                }
+                var subs1 = CreatSubsequenceWS(sequence.ToList(), sequence.Count - 1 - i);
+                
+                lsubseq.Add(subs1);
+            }
+
+            lsubseq.Sort((a,b)=>
+            {
+                if(a.Count > b.Count)
+                {
+                    return 1;
+                }
+                else if( a.Count < b.Count)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 0;
+                }
+            });
+
+            for (int i = 0; i < lsubseq.Count; i++)
+            {
+                if((i + 1) < lsubseq.Count)
+                {
+                    var c = lsubseq[i].GetBase;
+                    var n = lsubseq[i+1].GetBase;
+                    //// Same length and matching key
+                    if(c.Item1 == n.Item1 && lsubseq[i].Count == lsubseq[i+1].Count)
+                    {
+                        if (c.Item2 > n.Item2)
+                        {
+                            lsubseq[i + 1].BaseCorrection(c);
+                        }
+                    }
+                }
+            }
 
             //long result = solve(A, W);
         }
 
-        // Complete the solve function below.
-        static long solve(int[] Ai, int[] Wi)
+
+        private static WeightedStack CreatSubsequenceWS(List<(int, int)> sequence, int startIndex)
         {
-            List<int> A = Ai.ToList();
-            long maxSummedWeight = 0;
-
-            var WeightTable = new Dictionary<int, WeightNode>();
-            for (int i = 0; i < Ai.Length; i++)
+            var wsseq = new WeightedStack();
+            for (int i = startIndex; i >= 0; i--)
             {
-                if (!WeightTable.ContainsKey(Ai[i]))
+                ////// Key should be increasing while weight should be decreasing
+                if (wsseq.Count == 0)
                 {
-                    var wn = new WeightNode();
-                    wn.Childrens.Add(Tuple.Create(i, Wi[i]));
-                    WeightTable.Add(Ai[i], wn);
+                    wsseq.Push(sequence[i]);
                 }
                 else
                 {
-                    WeightTable[Ai[i]].Childrens.Add(Tuple.Create(i, Wi[i]));
+                    var e = wsseq.Peek();
+                    if (e.Item1 > sequence[i].Item1)
+                    {
+                        wsseq.Push(sequence[i]);
+                    }
                 }
             }
 
-            Dictionary<int, long> graphTable = new Dictionary<int, long>();
-
-            for (int i = Ai.Length - 1; i >= 0; i--)
-            {
-                var a = Ai[i];
-                var child = A.GetRange(i, A.Count - i).Where(e => e > a);
-                if (!graphTable.ContainsKey(a))
-                {
-                    if (child.Count() == 0)
-                    {
-                        graphTable.Add(a, WeightTable[a].GetWeight(i));
-                    }
-                    else
-                    {
-                        long ww = WeightTable[a].GetWeight(i);
-                        long localmax = 0;
-                        foreach (var c in child)
-                        {
-                            long ans = graphTable[c];
-                            if (ans > localmax)
-                            {
-                                localmax = ans;
-                            }
-                        }
-                        ww += localmax;
-
-                        graphTable.Add(a, ww);
-                    }
-                }
-                else
-                {
-                    long ww = WeightTable[a].GetWeight(i);
-
-                    long localmax = 0;
-                    // child contain multiple 40
-                    foreach (var c in child)
-                    {
-                        long ans = graphTable[c];
-                        if (ans > localmax)
-                        {
-                            localmax = ans;
-                        }
-                    }
-                    ww += localmax;
-
-                    if (ww > graphTable[a])
-                    {
-                        graphTable[a] = ww;
-                        // Might have to reset or do a check data sanity check
-                    }
-                }
-
-                if (graphTable[a] > maxSummedWeight)
-                {
-                    maxSummedWeight = graphTable[a];
-                }
-            }
-            return maxSummedWeight;
+            return wsseq;
         }
-        
+
+        private static Stack<(int, int)> CreatSubsequence(List<(int, int)> sequence, int startIndex)
+        {
+            var ssubseq = new Stack<(int, int)>();
+            for (int i = startIndex; i >= 0; i--) 
+            {
+                //// Key should be increasing while weight should be decreasing
+                if (ssubseq.Count == 0)
+                {
+                    ssubseq.Push(sequence[i]);
+                }
+                else
+                {
+                    var e = ssubseq.Peek();
+                    if (e.Item1 > sequence[i].Item1)
+                    {
+                        ssubseq.Push(sequence[i]);
+                    }
+                }
+            }
+            return ssubseq;
+        }
+
+        // Complete the solve function below.
+        //static long solve(int[] Ai, int[] Wi)
+        //{
+        //    List<int> A = Ai.ToList();
+        //    long maxSummedWeight = 0;
+
+        //    var WeightTable = new Dictionary<int, WeightNode>();
+        //    for (int i = 0; i < Ai.Length; i++)
+        //    {
+        //        if (!WeightTable.ContainsKey(Ai[i]))
+        //        {
+        //            var wn = new WeightNode();
+        //            wn.Childrens.Add(Tuple.Create(i, Wi[i]));
+        //            WeightTable.Add(Ai[i], wn);
+        //        }
+        //        else
+        //        {
+        //            WeightTable[Ai[i]].Childrens.Add(Tuple.Create(i, Wi[i]));
+        //        }
+        //    }
+
+        //    Dictionary<int, long> graphTable = new Dictionary<int, long>();
+
+        //    for (int i = Ai.Length - 1; i >= 0; i--)
+        //    {
+        //        var a = Ai[i];
+        //        var child = A.GetRange(i, A.Count - i).Where(e => e > a);
+        //        if (!graphTable.ContainsKey(a))
+        //        {
+        //            if (child.Count() == 0)
+        //            {
+        //                graphTable.Add(a, WeightTable[a].GetWeight(i));
+        //            }
+        //            else
+        //            {
+        //                long ww = WeightTable[a].GetWeight(i);
+        //                long localmax = 0;
+        //                foreach (var c in child)
+        //                {
+        //                    long ans = graphTable[c];
+        //                    if (ans > localmax)
+        //                    {
+        //                        localmax = ans;
+        //                    }
+        //                }
+        //                ww += localmax;
+
+        //                graphTable.Add(a, ww);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            long ww = WeightTable[a].GetWeight(i);
+
+        //            long localmax = 0;
+        //            // child contain multiple 40
+        //            foreach (var c in child)
+        //            {
+        //                long ans = graphTable[c];
+        //                if (ans > localmax)
+        //                {
+        //                    localmax = ans;
+        //                }
+        //            }
+        //            ww += localmax;
+
+        //            if (ww > graphTable[a])
+        //            {
+        //                graphTable[a] = ww;
+        //                // Might have to reset or do a check data sanity check
+        //            }
+        //        }
+
+        //        if (graphTable[a] > maxSummedWeight)
+        //        {
+        //            maxSummedWeight = graphTable[a];
+        //        }
+        //    }
+        //    return maxSummedWeight;
+        //}
+
         public static Func<int, bool> GreaterThanReferenceElement(int element)
         {
             return e => e > element;
