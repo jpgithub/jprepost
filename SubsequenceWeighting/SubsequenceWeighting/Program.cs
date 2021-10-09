@@ -8,80 +8,7 @@ namespace SubsequenceWeighting
 {
     public class Program
     {
-        public class WeightedStack
-        {
-            private Stack<(int, int)> ssubseq = new Stack<(int, int)>();
-            private uint weight;
-            private (int, int) bottom;
-            private bool basecorrection;
-
-            public (int,int) GetBase
-            {
-                get
-                {
-                    return bottom;
-                }
-            }
-            
-            public void BaseCorrection((int,int) nb)
-            {
-                basecorrection = true;
-                this.bottom = nb;
-            }
-            public int Count
-            {
-                get
-                {
-                    return ssubseq.Count;
-                }
-            }
-
-            public (int,int) Peek()
-            {
-                return ssubseq.Peek();
-            }
-
-            public uint Weight
-            {
-                get
-                {
-                    return this.weight + (uint)bottom.Item2;
-                }
-            }
-            public void Push((int,int) v)
-            {
-                //// Key should be increasing while weight should be decreasing
-                if (ssubseq.Count == 0)
-                {
-                    ssubseq.Push(v);
-                    bottom = v;
-                }
-                else
-                {
-                    var e = ssubseq.Peek();
-                    if (e.Item1 > v.Item1)
-                    {
-                        ssubseq.Push(v);
-                        weight += (uint)v.Item2;
-                    }
-                }
-                
-            }
-            
-            public (int,int) Pop()
-            {
-                if(ssubseq.Count == 1)
-                {
-                    //// Check base correction
-                    if(basecorrection)
-                    {
-                        ssubseq.Pop();
-                        return bottom;
-                    }
-                }
-                return ssubseq.Pop();
-            }
-        }
+        
         public static void Main(string[] args)
         {
             //List<int> A = new List<int>();
@@ -127,6 +54,7 @@ namespace SubsequenceWeighting
                 }
             });
 
+            uint maxweight = 0;
             for (int i = 0; i < lsubseq.Count; i++)
             {
                 if((i + 1) < lsubseq.Count)
@@ -142,7 +70,13 @@ namespace SubsequenceWeighting
                         }
                     }
                 }
+                if(maxweight < lsubseq[i].Weight)
+                {
+                    maxweight = lsubseq[i].Weight;
+                }
             }
+
+            Console.Out.WriteLine(maxweight);
 
             //long result = solve(A, W);
         }
@@ -150,7 +84,7 @@ namespace SubsequenceWeighting
 
         private static WeightedStack CreatSubsequenceWS(List<(int, int)> sequence, int startIndex)
         {
-            var wsseq = new WeightedStack();
+            var wsseq = new WeightedStack() { StartingIndex = startIndex };
             for (int i = startIndex; i >= 0; i--)
             {
                 ////// Key should be increasing while weight should be decreasing
