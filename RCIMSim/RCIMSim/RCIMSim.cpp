@@ -34,6 +34,7 @@ static void print_siginfo(siginfo_t* si)
 static void handler(int sig, siginfo_t* si, void* uc)
 {
 	signal(sig, SIG_IGN);
+	//cv.notify_one(); 
 }
 
 void my_handler(int param)
@@ -92,8 +93,16 @@ int main(int argc, char* argv[])
 	worker.join();
 	*/
 
-	//TODO: read https://linux.die.net/man/3/pthread_sigmask
+	//read https://linux.die.net/man/3/pthread_sigmask
+	//https://linoxide.com/signal-handling-linux-signal-function/
 	/*
+	* The signal() Function Limitations
+	Though the signal() function is the oldest and the easiest way to handle signals, it has a couple of major limitations :
+
+	Other signals are not blocked by the signal() function while the signal handler is executing for current signal. This may produce undesired results.
+	The signal action for a particular signal is reset to its default value i.e., SIG_DFL as soon as the signal is delivered. This means that even if the signal handler again sets the signal action as the first step, there is a possible time window in which the signal may occur again while its action is set to SIG_DFL.
+	Due to these major limitations, it is now advised to use the function sigaction() that overcomes all these limitations.
+	
 	void (*prev_handler)(int);
 	prev_handler = signal(SIGINT, my_handler);
 	raise(SIGINT);
