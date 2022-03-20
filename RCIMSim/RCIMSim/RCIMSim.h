@@ -11,6 +11,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <string>
+#include <chrono>
 
 #define CLOCKID CLOCK_REALTIME
 /*
@@ -27,3 +28,8 @@ but instead should always refer to real-time signals using the notation SIGRTMIN
 	exit(EXIT_FAILURE); \
 } while(0)
 
+typedef struct {
+	timer_t timerId;
+}Info_t;
+
+void RtInit(Info_t* info, long long freq_nanosecs);
