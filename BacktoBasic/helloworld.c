@@ -1,13 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <complex.h>
-
+#include <stdbool.h>
 
 int main(){
-        bool isC23 = true;
+		bool isC23 = true;
         if (isC23)
         {
-                printf("C23 Supported buit-in!\n");
+			#if __STDC_VERSION__ < 202311l
+				printf("C23 Supported buit-in!\n");
+			#else
+				printf("C23 Not supported buit-in!\n");
+			#endif	
         }
         short short_int = 0;
         printf("The short value %d and bytes size %ld\n", short_int, sizeof(short_int));
@@ -20,13 +24,23 @@ int main(){
         }
         printf("\n");
 
-        struct foo{
+/*         struct foo{
                 int x;
                 int y[];
         };
         printf("Size of struct foo:%ld \n", sizeof(struct foo));
 
         struct foo* f = malloc(sizeof(struct foo) + n * sizeof(int));
+*/
+		// Use typedef for better readability
+		typedef struct{
+			int x;
+			int y[];
+		}Foo;
+		
+		printf("Size of struct foo:%ld \n", sizeof(Foo));
+		Foo* f = malloc(sizeof(Foo) + n * sizeof(int));
+		
         printf("The memory address of foo ptr: %p\n", &f);
         f->x = 42;
         for  (int i = 0; i < n; i++)
