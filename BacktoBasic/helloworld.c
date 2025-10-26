@@ -8,9 +8,9 @@ int main(){
         if (isC23)
         {
 			#if __STDC_VERSION__ < 202311l
-				printf("C23 Supported buit-in!\n");
+				printf("C23 Not Supported buit-in!\n");
 			#else
-				printf("C23 Not supported buit-in!\n");
+				printf("C23 supported buit-in!\n");
 			#endif	
         }
         short short_int = 0;
