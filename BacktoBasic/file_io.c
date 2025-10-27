@@ -16,7 +16,7 @@ int main()
    }
 
    printf("Enter string: ");
-   scanf("%[^\n]",sentence);
+   scanf("%[^\n]s",sentence);
 
    fprintf(fptr,"%s",sentence);
    fclose(fptr);
