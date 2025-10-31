@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from scipy.ndimage import laplace, convolve
 from typing import Optional
 
 class bitmapfileheader:
@@ -79,15 +80,20 @@ def read_bmp(name)->Optional[tuple]:
     print(image.shape)
     return header, image
 
-def get_luminsity(image_array):
+def get_grayscale(image_array):
     # Extract RGB channels
-    r, g, b = image_array[:, :, 0], image_array[:, :, 1], image_array[:, :, 2]
-    # Calculate luminosity
-    luminosity = 0.2126 * r + 0.7152 * g + 0.0722 * b
-
+    r, g, b = image_array[:, :, 2], image_array[:, :, 1], image_array[:, :, 0]
+    # Calculate using luminosity method
+    grayscale_array = 0.299 * r + 0.587 * g + 0.114 * b
     # Example: Average luminosity
-    average_luminosity = np.mean(luminosity)
-    print("Average Luminosity:", average_luminosity)
+    #average_luminosity = np.mean(luminosity)
+    #print("Average Luminosity:", average_luminosity)
+    return grayscale_array
+
+def get_variance(image_array):
+    print(image_array.var())
+    var = np.mean(np.abs(image_array-image_array.mean())**2)
+    print(var)
 
 def auto_adjust_brightness(image):
     # Convert image to grayscale for histogram analysis
@@ -103,11 +109,46 @@ def auto_adjust_brightness(image):
     adjusted_image = cv2.LUT(image, gamma_table)
     return adjusted_image
 
+def focus_score_laplacian(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    laplacian = cv2.Laplacian(gray, cv2.CV_64F)
+    return laplacian.var()
+
+
 def run_it(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Run, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
     header, image_array = read_bmp("test_image_bmp.bmp")
-    get_luminsity(image_array)
+    # convert back to image type
+    grayscale = get_grayscale(image_array)
+    laplacian = laplace(grayscale)
+    #print("\nLaplacian-np-var:")
+    #print(np.var(laplacian))
+    # numpy laplacian not working after apply two gradient opted to use defined kernel and using scipy 2d convolve
+
+    # Laplacian kernel
+    laplacian_kernel = np.array([[0, 1, 0],
+                                 [1, -4, 1],
+                                 [0, 1, 0]])
+
+    # Apply the Laplacian filter
+    laplacian_image = convolve(grayscale, laplacian_kernel)
+
+    print("\nLaplacian of the Image:")
+    print(np.var(laplacian_image))
+
+
+    # Example usage
+#    image = cv2.imread("test_image_bmp.bmp")
+#    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#    score = focus_score_laplacian(image)
+#    print("Focus Score (Laplacian):", score)
+    #print(gray[0])
+    #print(grayscale[239])
+    #cv2.imshow("Original", image)
+    #cv2.imshow("GrayScale", gray)
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
 
     # Load and image
     # image = cv2.imread("test_image.png")
