@@ -8,8 +8,9 @@ char* getCharArray() {
     if (arr == NULL) {
         return NULL; // Handle memory allocation failure
     }
-    arr = "Hello World";
-    return arr;
+    strcpy(arr, "Hello World");
+    //Avoid overwriting the pointer. Instead, copy the string into the allocated memory using strcpy or similar functions:
+	return arr;
 }
 
 char* print_string()
@@ -25,7 +26,29 @@ char* print_string()
 int main()
 {
     char *mysubstr = print_string();
+	// mysubstr doesn't value doesn't exist anymore
     printf("My string: %s\n", mysubstr);
+	printf("Starting Exercise Two: printing-tokens \n");
+	/*Exercise Two:
+	// SRC - https://www.hackerrank.com/challenges/printing-tokens-/problem?isFullScreen=true
+	*/
+	char *s;
+    s = malloc(1024 * sizeof(char));
+    scanf("%[^\n]", s);
+	printf("Base Address: %p before realloc call\n", s);
+    s = realloc(s, strlen(s) + 1);
+	printf("Base Address: %p after realloc call\n", s);
+	// Does realloc change the base pointer address?
+	// replace all space with newline character ascii encoding.
+	for (int i=0; i < strlen(s); i++)
+	{
+		if (s[i] == ' ')
+		{
+			s[i] = '\n';
+		}
+	}
+	printf("%s",s);
+    return 0;
 }
 
 
