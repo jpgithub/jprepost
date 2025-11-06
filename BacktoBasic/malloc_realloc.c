@@ -22,9 +22,47 @@ char* print_string()
     return myptr_one;
 }
 
+void calloc_realloc() {
+   int *ptr;
+   int n, i;
+   // Allocate memory using malloc
+   n = 5;
+   ptr = (int*) calloc(n, sizeof(int));
+   if (ptr == NULL) {
+       printf("Memory not allocated.\n");
+       exit(0);
+   }
+   printf("Memory successfully allocated using malloc.\n");
+   // Initialize and print the array
+   for (i = 0; i < n; ++i) {
+       ptr[i] = i + 1;
+       printf("%d ", ptr[i]);
+   }
+   printf("\n");
+   // Reallocate memory using realloc
+   n = 10;
+   ptr = (int*) realloc(ptr, n * sizeof(int));
+   if (ptr == NULL) {
+       printf("Memory not reallocated.\n");
+       exit(0);
+   }
+   printf("Memory successfully reallocated using realloc.\n");
+   // Initialize and print the new array
+   for (i = 5; i < n; ++i) {
+       ptr[i] = i + 1;
+   }
+   for (i = 0; i < n; ++i) {
+       printf("%d ", ptr[i]);
+   }
+   printf("\n");
+   // Free the allocated memory
+   free(ptr);
+   printf("Memory successfully freed.\n");
+}
 
 int main()
 {
+	calloc_realloc();
     char *mysubstr = print_string();
 	// mysubstr doesn't value doesn't exist anymore
     printf("My string: %s\n", mysubstr);
@@ -48,6 +86,7 @@ int main()
 		}
 	}
 	printf("%s",s);
+	
     return 0;
 }
 
