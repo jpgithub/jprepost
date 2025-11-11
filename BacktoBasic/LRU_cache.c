@@ -14,8 +14,7 @@ typedef struct {
 	int occupied;
 } LRUCache;
 
-
-inline int hashfunction(int key,int size) {
+static inline int hashfunction(int key,int size) {
     return key % size;
 }
 
@@ -35,61 +34,59 @@ LRUCache* lRUCacheCreate(int capacity){
 
 int lRUCacheGet(LRUCache* obj, int key) {
 	int found = -1;
-	int i = hashfunction(key, obj->size);
-    //for (int i = 0; i < obj->size; i++)
-	//{
-	    if (obj->data[i].key == key)
-	    {
-	        found = obj->data[i].value;
-			obj->recent_rw = i;
-	        //break;
-	    }
-		else{
-			// Collision
+	// Reset recent_rw to base zero if found is -1
+	obj->recent_rw = 0;
+	int index = hashfunction(key,obj->size);
+	int k = key;
+	int i = 0; // Worst case search entire obj->size
+	while(i < obj->size)
+	{
+		if (obj->data[index].key == key)
+		{
+			found = obj->data[index].value;
+			obj->recent_rw = index;
+			break;
 		}
-	//}
+		k++;
+		index = hashfunction(k, obj->size);
+		i++;
+	}
 	return found;
 }
 
 void lRUCachePut(LRUCache* obj, int key, int value) {
-	// eviction and replacement
 	int index = hashfunction(key, obj->size);
-	if (obj->occupied == obj->capacity)
-    {
-		;
-	}
-	else
-	{	
-		if (obj->data[index].key == -1)
+	int k = key;
+	int i = 0;
+	
+	while(i < obj->size)
+	{
+		if (obj->occupied == obj->size)
 		{
-			obj->data[index].key = key;
-			obj->data[index].value = value;
-			obj->occupied++;
-			obj->recent_rw = index;
-		}
-		else{
-			//Index Collision Resolution
-			lRUCachePut(obj, key + 1, value);
-			// It not possible to have infinite recursion
-		}
-		
-		/*
-		int i = 0;
-		if (obj->recent_rw > -1)
-		{
-			i = obj->recent_rw;
-		}
-		for (; i < obj->size ; i++)
-		{
-			if (obj->data[i].key == -1)
+			// Evict and replacement
+			if (index != obj->recent_rw)
 			{
-				obj->data[i].key = key;
-				obj->data[i].value = value;
-				obj->occupied++;
-				obj->recent_rw = i;
+				obj->data[index].key = key;
+				obj->data[index].value = value;
+				obj->recent_rw = index;
 				break;
 			}
-		}*/
+		}
+		else
+		{
+			// Populated
+			if (obj->data[index].key == -1)
+			{
+				obj->data[index].key = key;
+				obj->data[index].value = value;
+				obj->occupied++;
+				obj->recent_rw = index;
+				break;
+			}
+		}
+		k++;
+		index = hashfunction(k, obj->size);
+		i++;
 	}
 }
 
@@ -98,8 +95,43 @@ void lRUCacheFree(LRUCache* obj) {
     free(obj);
 }
 
+
+static inline void dump_cache(LRUCache* myobj)
+{
+        printf("\nCache:\n{");
+        for (int i = 0; i < myobj->size; i++)
+        {
+                printf("%d=%d,", myobj->data[i].key, myobj->data[i].value);
+        }
+        printf("}\n");
+}
+
 int main()
 {
     LRUCache* myobj = lRUCacheCreate(2);
-    lRUCacheFree(myobj);
+	lRUCachePut(myobj,1,1);
+	lRUCachePut(myobj,2,2);
+	
+	dump_cache(myobj);
+	
+	int ans = lRUCacheGet(myobj,1);
+	printf("\n %d", ans);
+	
+	lRUCachePut(myobj,3,3);
+	
+	ans = lRUCacheGet(myobj,2);
+	printf("\n %d", ans);
+	
+	lRUCachePut(myobj,4,4);
+	
+	dump_cache(myobj);
+	
+	ans = lRUCacheGet(myobj, 1);
+	printf("\n %d", ans);
+	ans = lRUCacheGet(myobj,3);
+	printf("\n %d", ans);
+	ans = lRUCacheGet(myobj,4);
+	printf("\n %d", ans);
+    
+	lRUCacheFree(myobj);
 }
