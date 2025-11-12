@@ -90,6 +90,40 @@ def get_grayscale(image_array):
     #print("Average Luminosity:", average_luminosity)
     return grayscale_array
 
+def white_balance(image_array):
+    # Convert Image to float
+    img_float = img.astype(np.float32)
+    
+    #Find the specified percentile for each channel
+    #Find the maximum intensity for each channel
+    #Find the average intensity for each channel
+    
+    #  Calculate scaling factors
+    # if using avg intensity
+    avg_gray = (avg_r + avg_g + avg_b) / 3
+    scale_r = avg_gray / avg_r
+    scale_g = avg_gray / avg_g
+    scale_b = avg_gray / avg_b
+    
+    # max intensity
+    max_r = np.max(img_float[:,:,2])
+    max_g = np.max(img_float[:,:,1])
+    max_b = np.max(img_float[:,:,0])
+    
+    scale_r = 255.0 / max_r
+    scale_g = 255.0 / max_g
+    scale_b = 255.0 / max_b
+    
+    
+    # Apply scaling to each channel
+    img_float[:, :, 2] *= scale_r
+    img_float[:, :, 1] *= scale_g
+    img_float[:, :, 0] *= scale_b
+    
+    balanced_img = np.clip(img_float,0,255).astype(np.uint8)
+    return balanced_img
+    
+
 def get_variance(image_array):
     print(image_array.var())
     var = np.mean(np.abs(image_array-image_array.mean())**2)
