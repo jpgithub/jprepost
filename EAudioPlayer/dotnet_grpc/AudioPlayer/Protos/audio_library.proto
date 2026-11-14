@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package audioplayer.v1;
+
+option csharp_namespace = "AudioPlayer.Grpc";
+
+// Albums, tracks and audio streaming for the audio player.
+service AudioLibrary {
+  // Lists all albums.
+  rpc ListAlbums (ListAlbumsRequest) returns (ListAlbumsResponse);
+
+  // Gets one album with its tracks in play order. NOT_FOUND if the album does not exist.
+  rpc GetAlbum (GetAlbumRequest) returns (AlbumDetail);
+
+  // Gets metadata for one track. NOT_FOUND if the track does not exist.
+  rpc GetTrack (GetTrackRequest) returns (TrackInfo);
+
+  // Streams a track's audio bytes in order, optionally starting at a byte offset.
+  // NOT_FOUND if the track does not exist; OUT_OF_RANGE if the offset is past the end.
+  rpc StreamTrack (StreamTrackRequest) returns (stream AudioChunk);
+}
+
+message ListAlbumsRequest {}
+
+message ListAlbumsResponse {
+  repeated AlbumSummary albums = 1;
+}
+
+message GetAlbumRequest {
+  string album_id = 1;
+}
+
+message GetTrackRequest {
+  string track_id = 1;
+}
+
+message StreamTrackRequest {
+  string track_id = 1;
+  // First byte to send; 0 streams the whole file.
+  int64 offset = 2;
+}
+
+message AlbumSummary {
+  string id = 1;
+  string title = 2;
+  int32 track_count = 3;
+}
+
+message AlbumDetail {
+  string id = 1;
+  string title = 2;
+  repeated TrackInfo tracks = 3;
+}
+
+message TrackInfo {
+  string id = 1;
+  string title = 2;
+  string album_id = 3;
+  string album_title = 4;
+  // 1-based position within the album.
+  int32 number = 5;
+  // Audio format, e.g. MP3 or WAV.
+  string format = 6;
+  int64 size_bytes = 7;
+  // MIME type of the audio, e.g. audio/wav.
+  string content_type = 8;
+}
+
+message AudioChunk {
+  bytes data = 1;
+  // Position of the first byte of this chunk within the file.
+  int64 offset = 2;
+  // Total size of the file in bytes.
+  int64 total_size = 3;
+}

@@ -1,0 +1,46 @@
+<mat-card appearance="outlined">
+  <mat-card-content>
+    <section class="description" aria-label="Track description">
+      @if (player.currentTrack(); as track) {
+        <div class="title">{{ track.title }}</div>
+        <div class="meta">{{ track.albumTitle }} &bull; Track {{ track.number }}</div>
+        <div class="meta small">
+          {{ track.format }} &bull; {{ track.sizeBytes | fileSize }}
+          @if (player.duration() > 0) { &bull; {{ player.duration() | mmss }} }
+          @if (player.buffering()) { &bull; Streaming over gRPC&hellip; }
+        </div>
+        @if (player.playbackError(); as err) {
+          <div class="error">{{ err }}</div>
+        }
+      } @else {
+        <div class="title">No track selected</div>
+        <div class="meta">Choose a song from the list</div>
+      }
+    </section>
+
+    <section class="controls" aria-label="Audio playback control">
+      <button
+        matButton="filled"
+        class="toggle"
+        [class.stop]="player.isActive()"
+        [disabled]="!player.currentTrack()"
+        [attr.aria-pressed]="player.isActive()"
+        (click)="player.toggle()"
+      >
+        <mat-icon>{{ player.isActive() ? 'stop' : 'play_arrow' }}</mat-icon>
+        {{ player.isActive() ? 'Stop' : 'Play' }}
+      </button>
+
+      <span class="time">{{ shownTime() | mmss }}</span>
+      <mat-slider class="seek" [min]="0" [max]="max" [step]="1" [disabled]="!player.currentTrack()" aria-label="Song progress">
+        <input
+          matSliderThumb
+          [value]="sliderValue()"
+          (valueChange)="onDrag($event)"
+          (dragEnd)="onCommit(dragValue())"
+        />
+      </mat-slider>
+      <span class="time">{{ player.duration() | mmss }}</span>
+    </section>
+  </mat-card-content>
+</mat-card>

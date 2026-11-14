@@ -1,0 +1,21 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title class="panel-title">Songs &ndash; {{ player.selectedAlbum()?.title }}</mat-card-title>
+  </mat-card-header>
+  <mat-action-list>
+    @for (track of player.selectedAlbum()?.tracks ?? []; track track.id) {
+      @let active = track.id === player.currentTrack()?.id;
+      <button mat-list-item [activated]="active" (click)="player.selectTrack(track)">
+        <span matListItemIcon class="num">
+          @if (active) { <mat-icon>music_note</mat-icon> } @else { {{ track.number }} }
+        </span>
+        <span matListItemTitle>{{ track.title }}</span>
+        @if (active) {
+          <span matListItemLine class="line">
+            <mat-progress-bar mode="determinate" [value]="player.progress() * 100" aria-label="Song progress"></mat-progress-bar>
+          </span>
+        }
+      </button>
+    }
+  </mat-action-list>
+</mat-card>

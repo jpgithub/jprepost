@@ -1,0 +1,20 @@
+<mat-toolbar>
+  <mat-icon>library_music</mat-icon>
+  <span class="brand">Audio Player</span>
+</mat-toolbar>
+
+<main>
+  @if (player.loading()) {
+    <mat-spinner diameter="40" />
+  } @else if (player.error(); as err) {
+    <p class="notice error">{{ err }}</p>
+  } @else if (player.albums().length === 0) {
+    <p class="notice">No audio found. Add album folders with audio files to the backend's Audio folder.</p>
+  } @else {
+    <app-now-playing />
+    <div class="track-list">
+      <app-album-panel />
+      <app-song-panel />
+    </div>
+  }
+</main>
