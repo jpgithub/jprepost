@@ -1,0 +1,21 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title class="panel-title">Albums</mat-card-title>
+  </mat-card-header>
+  <mat-action-list>
+    @for (album of player.albums(); track album.id) {
+      <button
+        mat-list-item
+        [activated]="album.id === player.selectedAlbumId()"
+        [class.playing]="album.id === player.playingAlbumId()"
+        (click)="player.selectAlbum(album.id)"
+      >
+        <mat-icon matListItemIcon class="indicator" [attr.aria-label]="album.id === player.playingAlbumId() ? 'Now playing' : null">
+          {{ album.id === player.playingAlbumId() ? 'graphic_eq' : 'album' }}
+        </mat-icon>
+        <span matListItemTitle>{{ album.title }}</span>
+        <span matListItemMeta>{{ album.tracks.length }}</span>
+      </button>
+    }
+  </mat-action-list>
+</mat-card>

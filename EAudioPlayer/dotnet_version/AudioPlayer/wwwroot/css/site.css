@@ -1,0 +1,44 @@
+:root { --accent: #0d6efd; }
+body { background: #f4f6f9; }
+.app-header { background: #fff; border-bottom: 1px solid #dee2e6; padding: .75rem 0; }
+.app-header .navbar-brand { font-weight: 600; }
+
+.player { max-width: 900px; margin: 0 auto; }
+
+.now-playing { background: #fff; border-radius: .5rem; padding: 1rem 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,.1); margin-bottom: 1rem; }
+.track-description { background: #f8f9fa; border: 1px solid #e3e6ea; border-radius: .4rem; padding: .75rem 1rem; margin-bottom: 1rem; min-height: 5.5rem; }
+.td-title { font-size: 1.25rem; font-weight: 600; }
+.td-meta { color: #6c757d; }
+
+.controls { display: flex; align-items: center; gap: .75rem; }
+.toggle-btn { min-width: 6rem; }
+.time { font-variant-numeric: tabular-nums; color: #495057; min-width: 2.75rem; text-align: center; }
+.progress-range { flex: 1; accent-color: var(--accent); }
+
+.track-list { display: grid; grid-template-columns: 260px 1fr; gap: 1rem; }
+.albums-panel, .songs-panel { background: #fff; border-radius: .5rem; box-shadow: 0 1px 3px rgba(0,0,0,.1); overflow: hidden; }
+.panel-title { font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: #6c757d; margin: 0; padding: .75rem 1rem; border-bottom: 1px solid #eef0f2; }
+
+.album-item, .song-item { display: flex; align-items: center; gap: .6rem; width: 100%; border: 0; background: none; text-align: left; padding: .65rem 1rem; border-left: 4px solid transparent; }
+.album-item:hover, .song-item:hover { background: #f1f5fb; }
+.album-item.selected { background: #eef3fb; }
+.album-name { flex: 1; }
+
+/* Active-album indicator: shown only for the album that owns the playing song */
+.album-indicator { width: 1rem; visibility: hidden; color: var(--accent); }
+.album-item.playing { border-left-color: var(--accent); font-weight: 600; }
+.album-item.playing .album-indicator { visibility: visible; }
+.album-item.playing .album-indicator { animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .3; } }
+
+.song-item { position: relative; flex-wrap: wrap; }
+.song-num { width: 1.5rem; color: #6c757d; text-align: right; }
+.song-title { flex: 1; }
+.song-state { width: 1rem; color: var(--accent); }
+.song-item.active { background: #eef3fb; border-left-color: var(--accent); font-weight: 600; }
+.song-item.active .song-state::before { content: "\266B"; }
+.song-progress { display: none; flex-basis: 100%; height: 4px; background: #dde3ea; border-radius: 2px; margin-left: 2.1rem; }
+.song-item.active .song-progress { display: block; }
+.song-progress-bar { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 2px; }
+
+@media (max-width: 640px) { .track-list { grid-template-columns: 1fr; } }

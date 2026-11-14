@@ -1,0 +1,25 @@
+mat-toolbar { gap: 8px; }
+.brand { font: var(--mat-sys-title-medium); }
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.track-list {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.notice { padding: 16px; border-radius: var(--mat-sys-corner-medium); background: var(--mat-sys-surface-container); }
+.notice.error { color: var(--mat-sys-on-error-container); background: var(--mat-sys-error-container); }
+
+@media (max-width: 640px) {
+  .track-list { grid-template-columns: 1fr; }
+}

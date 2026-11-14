@@ -1,0 +1,83 @@
+@model PlayerViewModel
+@{
+    ViewData["Title"] = "Player";
+}
+
+@if (Model.Albums.Count == 0)
+{
+    <div class="alert alert-info">
+        No audio found. Add folders containing audio files (mp3, wav, ogg, m4a, flac, aac) under
+        <code>wwwroot/audio</code>; each folder is an album.
+    </div>
+    return;
+}
+
+<div id="player" class="player">
+    <section class="now-playing" aria-label="Audio playback control">
+        <div class="track-description" id="track-description">
+            <div class="td-title" id="td-title">No track selected</div>
+            <div class="td-meta" id="td-album">Choose a song from the list</div>
+            <div class="td-meta small" id="td-details"></div>
+        </div>
+
+        <div class="controls">
+            <button type="button" id="toggle-btn" class="btn btn-primary toggle-btn" aria-pressed="false">&#9654; Play</button>
+            <span class="time" id="time-current">0:00</span>
+            <input type="range" id="progress" class="progress-range" min="0" max="1000" value="0" step="1" disabled aria-label="Song progress" />
+            <span class="time" id="time-total">0:00</span>
+        </div>
+        <audio id="audio" preload="metadata"></audio>
+    </section>
+
+    <section class="track-list">
+        <aside class="albums-panel" aria-label="Albums">
+            <h2 class="panel-title">Albums</h2>
+            <ul class="list-unstyled mb-0" id="album-list">
+                @for (var i = 0; i < Model.Albums.Count; i++)
+                {
+                    var album = Model.Albums[i];
+                    <li>
+                        <button type="button" class="album-item @(i == 0 ? "selected" : "")" data-album="@album.Id">
+                            <span class="album-indicator" aria-hidden="true">&#9654;</span>
+                            <span class="album-name">@album.Title</span>
+                            <span class="badge text-bg-secondary">@album.Tracks.Count</span>
+                        </button>
+                    </li>
+                }
+            </ul>
+        </aside>
+
+        <div class="songs-panel" aria-label="Songs">
+            <h2 class="panel-title" id="songs-title">Songs</h2>
+            @for (var i = 0; i < Model.Albums.Count; i++)
+            {
+                var album = Model.Albums[i];
+                <ol class="song-list list-unstyled mb-0" data-album="@album.Id" @(i == 0 ? "" : "hidden")>
+                    @foreach (var t in album.Tracks)
+                    {
+                        <li>
+                            <button type="button" class="song-item"
+                                    data-track="@t.Id"
+                                    data-album="@t.AlbumId"
+                                    data-album-title="@t.AlbumTitle"
+                                    data-title="@t.Title"
+                                    data-number="@t.Number"
+                                    data-url="@t.Url"
+                                    data-format="@t.Format"
+                                    data-size="@t.SizeBytes">
+                                <span class="song-num">@t.Number</span>
+                                <span class="song-title">@t.Title</span>
+                                <span class="song-state" aria-hidden="true"></span>
+                                <span class="song-progress"><span class="song-progress-bar"></span></span>
+                            </button>
+                        </li>
+                    }
+                </ol>
+            }
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/player.js" asp-append-version="true"></script>
+}

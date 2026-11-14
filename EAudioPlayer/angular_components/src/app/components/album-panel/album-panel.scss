@@ -1,0 +1,14 @@
+.panel-title { font: var(--mat-sys-label-large); text-transform: uppercase; letter-spacing: .05em; color: var(--mat-sys-on-surface-variant); padding-top: 12px; }
+
+.indicator { color: var(--mat-sys-outline); }
+
+/* Active-album indicator: only the album that owns the playing song */
+.playing {
+  --mat-list-list-item-label-text-weight: 600;
+  box-shadow: inset 4px 0 0 var(--mat-sys-primary);
+  .indicator {
+    color: var(--mat-sys-primary);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+}
+@keyframes pulse { 50% { opacity: .35; } }
